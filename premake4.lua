@@ -21,13 +21,17 @@ newaction {
 	description = "Run tests",
 
 	execute = function ()
-		tests = os.matchfiles("test/*.lua")
-		for index, name in pairs(tests) do
-			os.execute ("cp build/lib/liballedge_lua.so liballedge_lua.so")
-			os.execute ("lua " .. name)
-			cmd = io.stdin:read'*l'
-			if cmd == "q" then
-				break;
+		os.execute ("cp build/lib/liballedge_lua.so liballedge_lua.so")
+		if _OPTIONS["test"] then
+			os.execute ("lua test/" .. _OPTIONS["test"] .. ".lua")
+		else
+			tests = os.matchfiles("test/*.lua")
+			for index, name in pairs(tests) do
+				os.execute ("lua " .. name)
+				cmd = io.stdin:read'*l'
+				if cmd == "q" then
+					break;
+				end
 			end
 		end
 	end
@@ -37,6 +41,12 @@ newoption {
    trigger     = "dir",
    value       = "path",
    description = "Choose a path to install dir",
+}
+
+newoption {
+   trigger     = "test",
+   value       = "test_suite",
+   description = "Choose which test suite to run",
 }
 
 newaction {
