@@ -9,7 +9,7 @@ extern "C" {
 #include "alledge/Scenenode.h"
 #include "alledge/shared_ptr.h"
 
-namespace adagio
+namespace alledge_lua
 {
 
 #define SCENENODE_STRING "scenenode"

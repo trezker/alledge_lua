@@ -3,9 +3,8 @@
 
 #include <stdio.h>
 
-namespace adagio
+namespace alledge_lua
 {
-
 
 /* Common handlers
  * */

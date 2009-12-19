@@ -1,9 +1,10 @@
 #include "../alledge_lua/Scenenode.h"
 #include "../alledge_lua/Cameranode.h"
+#include "../alledge_lua/Vector3.h"
 #include "alledge/Cameranode.h"
 #include <stdio.h>
 
-namespace adagio
+namespace alledge_lua
 {
 
 #define CAMERANODE_STRING "cameranode"
@@ -59,12 +60,23 @@ static int cameranode_cast(lua_State *L)
 		lua_pushnil(L);
 	return 1;
 }
+/*
+	Vector3 Get_up();
+	Vector3 Get_front();
+	Vector3 Get_right();
 
-static int cameranode_set_text(lua_State *L)
+	void Set_position(Vector3 v);
+	void Set_rotation(Vector3 v);
+	Vector3 Get_position();
+	Vector3 Get_rotation();
+	
+	void Set_rotate_around_world_origo(bool t);
+*/
+static int cameranode_look_at(lua_State *L)
 {
 	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
-//	const char* label = luaL_checkstring(L, 2);
-//	cameranode->Set_text(label);
+	Vector3 vector = check_vector3(L, 2);
+	cameranode->Look_at(vector);
 	return 0;
 }
 
@@ -78,7 +90,7 @@ static int cameranode_get_text(lua_State *L)
 static const luaL_reg cameranode_methods[] = {
 	{"create_cameranode", cameranode_create_cameranode},
 	{"cast", cameranode_cast},
-	{"set_text", cameranode_set_text},
+	{"look_at", cameranode_look_at},
 	{"get_text", cameranode_get_text},
 	{0,0}
 };

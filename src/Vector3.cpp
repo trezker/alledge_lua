@@ -2,11 +2,14 @@
 #include <cstdio>
 #include <cstring>
 
+namespace alledge_lua
+{
+
 #define VECTOR3_STRING "vector3"
 
 /* Common handlers
  * */
-Vector3 alledge_check_vector3 (lua_State *L, int index)
+Vector3 check_vector3 (lua_State *L, int index)
 {
   Vector3 *pi, im;
   luaL_checktype(L, index, LUA_TUSERDATA);
@@ -17,7 +20,7 @@ Vector3 alledge_check_vector3 (lua_State *L, int index)
   return im;
 }
 
-Vector3 *alledge_pushVector3 (lua_State *L, Vector3 im)
+Vector3 *pushVector3 (lua_State *L, Vector3 im)
 {
   Vector3 *pi = (Vector3 *)lua_newuserdata(L, sizeof(Vector3));
   *pi = im;
@@ -28,7 +31,7 @@ Vector3 *alledge_pushVector3 (lua_State *L, Vector3 im)
 
 /* Constructor and methods
  * */
-static int alledge_vector3_new(lua_State *L)
+static int vector3_new(lua_State *L)
 {
 	Vector3 v;
 	if (lua_gettop(L)==3) {
@@ -37,50 +40,50 @@ static int alledge_vector3_new(lua_State *L)
 		v.z = luaL_checknumber(L, 3);
 	}
 	else if (lua_gettop(L)==1) {
-		Vector3 o = alledge_check_vector3(L, 1);
+		Vector3 o = check_vector3(L, 1);
 		v = o;
 	}
-	alledge_pushVector3(L, v);
+	pushVector3(L, v);
 	return 1;
 }
 
-static int alledge_vector3_length (lua_State *L)
+static int vector3_length (lua_State *L)
 {
 	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
 	lua_pushnumber(L, v->Length());
 	return 1;
 }
 
-static int alledge_vector3_squaredlength (lua_State *L)
+static int vector3_squaredlength (lua_State *L)
 {
 	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
 	lua_pushnumber(L, v->SquaredLength());
 	return 1;
 }
 
-static int alledge_vector3_normalize (lua_State *L)
+static int vector3_normalize (lua_State *L)
 {
 	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
 	v->Normalize();
 	return 0;
 }
 
-static int alledge_vector3_getnormalized (lua_State *L)
+static int vector3_getnormalized (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
-	alledge_pushVector3(L, v1->GetNormalized());
+	pushVector3(L, v1->GetNormalized());
 	return 1;
 }
 
-static int alledge_vector3_crossproduct (lua_State *L)
+static int vector3_crossproduct (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
 	Vector3 *v2 = (Vector3*)lua_touserdata(L, 2);
-	alledge_pushVector3(L, v1->CrossProduct(*v2));
+	pushVector3(L, v1->CrossProduct(*v2));
 	return 1;
 }
 
-static int alledge_vector3_dotproduct (lua_State *L)
+static int vector3_dotproduct (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
 	Vector3 *v2 = (Vector3*)lua_touserdata(L, 2);
@@ -88,7 +91,7 @@ static int alledge_vector3_dotproduct (lua_State *L)
 	return 1;
 }
 
-static int alledge_vector3_getangledegrees (lua_State *L)
+static int vector3_getangledegrees (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
 	Vector3 *v2 = (Vector3*)lua_touserdata(L, 2);
@@ -96,7 +99,7 @@ static int alledge_vector3_getangledegrees (lua_State *L)
 	return 1;
 }
 
-static int alledge_vector3_getangleradians (lua_State *L)
+static int vector3_getangleradians (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
 	Vector3 *v2 = (Vector3*)lua_touserdata(L, 2);
@@ -104,7 +107,7 @@ static int alledge_vector3_getangleradians (lua_State *L)
 	return 1;
 }
 
-static int alledge_vector3_getproperty (lua_State *L)
+static int vector3_getproperty (lua_State *L)
 {
 	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
 	const char* i = luaL_checkstring(L, 2);
@@ -126,7 +129,7 @@ static int alledge_vector3_getproperty (lua_State *L)
 	return 1;
 }
 
-static int alledge_vector3_newindex (lua_State *L)
+static int vector3_newindex (lua_State *L)
 {
 	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
 	const char* i = luaL_checkstring(L, 2);
@@ -145,46 +148,46 @@ static int alledge_vector3_newindex (lua_State *L)
 	return 0;
 }
 
-static int alledge_vector3_add (lua_State *L)
+static int vector3_add (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
 	Vector3 *v2 = (Vector3*)lua_touserdata(L, 2);
-	alledge_pushVector3(L, (*v1)+(*v2));
+	pushVector3(L, (*v1)+(*v2));
 	return 1;
 }
 
-static int alledge_vector3_sub (lua_State *L)
+static int vector3_sub (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
 	Vector3 *v2 = (Vector3*)lua_touserdata(L, 2);
-	alledge_pushVector3(L, (*v1)-(*v2));
+	pushVector3(L, (*v1)-(*v2));
 	return 1;
 }
 
-static int alledge_vector3_unm (lua_State *L)
+static int vector3_unm (lua_State *L)
 {
 	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
-	alledge_pushVector3(L, -(*v));
+	pushVector3(L, -(*v));
 	return 1;
 }
 
-static int alledge_vector3_mul (lua_State *L)
-{
-	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
-	float s = luaL_checknumber(L, 2);
-	alledge_pushVector3(L, (*v)*s);
-	return 1;
-}
-
-static int alledge_vector3_div (lua_State *L)
+static int vector3_mul (lua_State *L)
 {
 	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
 	float s = luaL_checknumber(L, 2);
-	alledge_pushVector3(L, (*v)/s);
+	pushVector3(L, (*v)*s);
 	return 1;
 }
 
-static int alledge_vector3_eq (lua_State *L)
+static int vector3_div (lua_State *L)
+{
+	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
+	float s = luaL_checknumber(L, 2);
+	pushVector3(L, (*v)/s);
+	return 1;
+}
+
+static int vector3_eq (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
 	Vector3 *v2 = (Vector3*)lua_touserdata(L, 2);
@@ -192,69 +195,69 @@ static int alledge_vector3_eq (lua_State *L)
 	return 1;
 }
 
-static const luaL_reg alledge_vector3_methods[] = {
-	{"new",           alledge_vector3_new},
-	{"get",           alledge_vector3_getproperty},
-	{"set",           alledge_vector3_newindex},
-	{"length",           alledge_vector3_length},
-	{"squaredlength",           alledge_vector3_squaredlength},
-	{"normalize",           alledge_vector3_normalize},
-	{"getnormalized",           alledge_vector3_getnormalized},
-	{"crossproduct",           alledge_vector3_crossproduct},
-	{"dotproduct",           alledge_vector3_dotproduct},
-	{"getangledegrees",           alledge_vector3_getangledegrees},
-	{"getangleradians",           alledge_vector3_getangleradians},
+static const luaL_reg vector3_methods[] = {
+	{"new",           vector3_new},
+	{"get",           vector3_getproperty},
+	{"set",           vector3_newindex},
+	{"length",        vector3_length},
+	{"squaredlength", vector3_squaredlength},
+	{"normalize",     vector3_normalize},
+	{"getnormalized", vector3_getnormalized},
+	{"crossproduct",  vector3_crossproduct},
+	{"dotproduct",    vector3_dotproduct},
+	{"getangledegrees", vector3_getangledegrees},
+	{"getangleradians", vector3_getangleradians},
 	{0,0}
 };
 
-static int alledge_vector3_index (lua_State *L)
+static int vector3_index (lua_State *L)
 {
 	const char* field = luaL_checkstring(L, 2);
 	
-	for(int i = 0; alledge_vector3_methods[i].name!=0; ++i)
+	for(int i = 0; vector3_methods[i].name!=0; ++i)
 	{
-		if(strcmp(field, alledge_vector3_methods[i].name) == 0)
+		if(strcmp(field, vector3_methods[i].name) == 0)
 		{
-			lua_pushcfunction (L, alledge_vector3_methods[i].func);
+			lua_pushcfunction (L, vector3_methods[i].func);
 			return 1;
 		}
 	}
 	
-	return alledge_vector3_getproperty(L);
+	return vector3_getproperty(L);
 }
 
 /* GC and meta
  * */
-static int alledge_vector3_tostring (lua_State *L)
+static int vector3_tostring (lua_State *L)
 {
 	lua_pushfstring(L, "vector3: %p", lua_touserdata(L, 1));
 	return 1;
 }
 
-static const luaL_reg alledge_vector3_meta[] = {
-	{"__tostring", alledge_vector3_tostring},
-	{"__newindex", alledge_vector3_newindex},
-	{"__index", alledge_vector3_index},
-	{"__add", alledge_vector3_add},
-	{"__sub", alledge_vector3_sub},
-	{"__unm", alledge_vector3_unm},
-	{"__mul", alledge_vector3_mul},
-	{"__div", alledge_vector3_div},
-	{"__eq", alledge_vector3_eq},
+static const luaL_reg vector3_meta[] = {
+	{"__tostring", vector3_tostring},
+	{"__newindex", vector3_newindex},
+	{"__index", vector3_index},
+	{"__add", vector3_add},
+	{"__sub", vector3_sub},
+	{"__unm", vector3_unm},
+	{"__mul", vector3_mul},
+	{"__div", vector3_div},
+	{"__eq", vector3_eq},
 	{0, 0}
 };
 
 /* Register
  * */
-int alledge_register_vector3 (lua_State *L)
+int register_vector3 (lua_State *L)
 {
   lua_newtable(L);
-  luaL_register(L, NULL, alledge_vector3_methods);  /* create methods table,
+  luaL_register(L, NULL, vector3_methods);  /* create methods table,
                                                 add it to the globals */
 
   luaL_newmetatable(L, VECTOR3_STRING);        /* create metatable for Image,
                                          add it to the Lua registry */
-  luaL_register(L, 0, alledge_vector3_meta);  /* fill metatable */
+  luaL_register(L, 0, vector3_meta);  /* fill metatable */
 
   lua_pushliteral(L, "__metatable");
   lua_pushvalue(L, -3);               /* dup methods table*/
@@ -264,4 +267,6 @@ int alledge_register_vector3 (lua_State *L)
 
   lua_setfield(L, -2, VECTOR3_STRING);
   return 0;                           /* return methods on the stack */
+}
+
 }

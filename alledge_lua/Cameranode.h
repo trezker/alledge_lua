@@ -10,7 +10,7 @@ extern "C" {
 #include "Scenenode.h"
 #include "alledge/shared_ptr.h"
 
-namespace adagio
+namespace alledge_lua
 {
 
 class Cameranode_ud: public Scenenode_ud
