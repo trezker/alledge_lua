@@ -47,7 +47,7 @@ Scenenode_ud *push_scenenode (lua_State *L, shared_ptr<Scenenode> im)
 
 /* Constructor and methods
  * */
-static int scenenode_create(lua_State *L)
+static int scenenode_new(lua_State *L)
 {
 	push_scenenode(L, shared_ptr<Scenenode>(new Scenenode));
 	return 1;
@@ -85,7 +85,7 @@ static int scenenode_eq (lua_State *L)
 }
 
 static const luaL_reg scenenode_methods[] = {
-	{"create", scenenode_create},
+	{"new", scenenode_new},
 	{"attach_node", scenenode_attach_node},
 	{"detach_node", scenenode_detach_node},
 	{"apply", scenenode_apply},
