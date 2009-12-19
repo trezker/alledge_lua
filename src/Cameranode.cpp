@@ -61,15 +61,6 @@ static int cameranode_cast(lua_State *L)
 	return 1;
 }
 /*
-	Vector3 Get_up();
-	Vector3 Get_front();
-	Vector3 Get_right();
-
-	void Set_position(Vector3 v);
-	void Set_rotation(Vector3 v);
-	Vector3 Get_position();
-	Vector3 Get_rotation();
-	
 	void Set_rotate_around_world_origo(bool t);
 */
 static int cameranode_look_at(lua_State *L)
@@ -84,6 +75,58 @@ static int cameranode_get_up(lua_State *L)
 {
 	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
 	push_vector3(L, cameranode->Get_up());
+	return 1;
+}
+
+static int cameranode_get_front(lua_State *L)
+{
+	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
+	push_vector3(L, cameranode->Get_front());
+	return 1;
+}
+
+static int cameranode_get_right(lua_State *L)
+{
+	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
+	push_vector3(L, cameranode->Get_right());
+	return 1;
+}
+
+static int cameranode_get_position(lua_State *L)
+{
+	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
+	push_vector3(L, cameranode->Get_position());
+	return 1;
+}
+
+static int cameranode_get_rotation(lua_State *L)
+{
+	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
+	push_vector3(L, cameranode->Get_rotation());
+	return 1;
+}
+
+static int cameranode_set_position(lua_State *L)
+{
+	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
+	Vector3 vector = check_vector3(L, 2);
+	cameranode->Set_position(vector);
+	return 0;
+}
+
+static int cameranode_set_rotation(lua_State *L)
+{
+	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
+	Vector3 vector = check_vector3(L, 2);
+	cameranode->Set_rotation(vector);
+	return 0;
+}
+
+static int cameranode_set_rotate_around_world_origo(lua_State *L)
+{
+	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
+	bool t = lua_toboolean(L, 2);
+	cameranode->Set_rotate_around_world_origo(t);
 	return 0;
 }
 
@@ -92,6 +135,13 @@ static const luaL_reg cameranode_methods[] = {
 	{"cast", cameranode_cast},
 	{"look_at", cameranode_look_at},
 	{"get_up", cameranode_get_up},
+	{"get_front", cameranode_get_front},
+	{"get_right", cameranode_get_right},
+	{"get_position", cameranode_get_position},
+	{"get_rotation", cameranode_get_rotation},
+	{"set_position", cameranode_set_position},
+	{"set_rotation", cameranode_set_rotation},
+	{"set_rotate_around_world_origo", cameranode_set_rotate_around_world_origo},
 	{0,0}
 };
 
