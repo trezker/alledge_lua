@@ -22,7 +22,7 @@ int register_vector3 (lua_State* L);
  * Pointer to Color instance.
  * */
 Vector3 check_vector3 (lua_State *L, int index);
-Vector3 *pushVector3 (lua_State *L, Vector3 im);
+Vector3 *push_vector3 (lua_State *L, Vector3 im);
 
 }
 

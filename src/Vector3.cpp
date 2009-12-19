@@ -20,7 +20,7 @@ Vector3 check_vector3 (lua_State *L, int index)
   return im;
 }
 
-Vector3 *pushVector3 (lua_State *L, Vector3 im)
+Vector3 *push_vector3 (lua_State *L, Vector3 im)
 {
   Vector3 *pi = (Vector3 *)lua_newuserdata(L, sizeof(Vector3));
   *pi = im;
@@ -43,7 +43,7 @@ static int vector3_new(lua_State *L)
 		Vector3 o = check_vector3(L, 1);
 		v = o;
 	}
-	pushVector3(L, v);
+	push_vector3(L, v);
 	return 1;
 }
 
@@ -71,7 +71,7 @@ static int vector3_normalize (lua_State *L)
 static int vector3_getnormalized (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
-	pushVector3(L, v1->GetNormalized());
+	push_vector3(L, v1->GetNormalized());
 	return 1;
 }
 
@@ -79,7 +79,7 @@ static int vector3_crossproduct (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
 	Vector3 *v2 = (Vector3*)lua_touserdata(L, 2);
-	pushVector3(L, v1->CrossProduct(*v2));
+	push_vector3(L, v1->CrossProduct(*v2));
 	return 1;
 }
 
@@ -152,7 +152,7 @@ static int vector3_add (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
 	Vector3 *v2 = (Vector3*)lua_touserdata(L, 2);
-	pushVector3(L, (*v1)+(*v2));
+	push_vector3(L, (*v1)+(*v2));
 	return 1;
 }
 
@@ -160,14 +160,14 @@ static int vector3_sub (lua_State *L)
 {
 	Vector3 *v1 = (Vector3*)lua_touserdata(L, 1);
 	Vector3 *v2 = (Vector3*)lua_touserdata(L, 2);
-	pushVector3(L, (*v1)-(*v2));
+	push_vector3(L, (*v1)-(*v2));
 	return 1;
 }
 
 static int vector3_unm (lua_State *L)
 {
 	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
-	pushVector3(L, -(*v));
+	push_vector3(L, -(*v));
 	return 1;
 }
 
@@ -175,7 +175,7 @@ static int vector3_mul (lua_State *L)
 {
 	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
 	float s = luaL_checknumber(L, 2);
-	pushVector3(L, (*v)*s);
+	push_vector3(L, (*v)*s);
 	return 1;
 }
 
@@ -183,7 +183,7 @@ static int vector3_div (lua_State *L)
 {
 	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
 	float s = luaL_checknumber(L, 2);
-	pushVector3(L, (*v)/s);
+	push_vector3(L, (*v)/s);
 	return 1;
 }
 

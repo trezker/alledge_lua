@@ -44,7 +44,7 @@ Cameranode_ud *push_cameranode (lua_State *L, shared_ptr<Cameranode> im)
 
 /* Constructor and methods
  * */
-static int cameranode_create_cameranode(lua_State *L)
+static int cameranode_new(lua_State *L)
 {
 	push_cameranode(L, shared_ptr<Cameranode>(new Cameranode));
 	return 1;
@@ -80,18 +80,18 @@ static int cameranode_look_at(lua_State *L)
 	return 0;
 }
 
-static int cameranode_get_text(lua_State *L)
+static int cameranode_get_up(lua_State *L)
 {
 	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
-//	lua_pushstring(L, cameranode->Get_text().c_str());
+	push_vector3(L, cameranode->Get_up());
 	return 0;
 }
 
 static const luaL_reg cameranode_methods[] = {
-	{"create_cameranode", cameranode_create_cameranode},
+	{"new", cameranode_new},
 	{"cast", cameranode_cast},
 	{"look_at", cameranode_look_at},
-	{"get_text", cameranode_get_text},
+	{"get_up", cameranode_get_up},
 	{0,0}
 };
 
@@ -126,7 +126,7 @@ int register_cameranode (lua_State *L)
 												add it to the globals */
 
 	//Inherit baseclass methods
-	luaL_getmetatable (L, SCENENODE_STRING);
+	luaL_getmetatable (L, CAMERANODE_STRING);
 	lua_setmetatable (L, -2);
 
 	luaL_newmetatable(L, CAMERANODE_STRING);        /* create metatable for Image,
