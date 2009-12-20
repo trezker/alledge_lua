@@ -1,6 +1,7 @@
 #include "../alledge_lua/Scenenode.h"
 #include "../alledge_lua/Quadnode.h"
 #include "../alledge_lua/Vector3.h"
+#include "../alledge_lua/Bitmap.h"
 #include "alledge/Quadnode.h"
 #include <stdio.h>
 
@@ -60,20 +61,38 @@ static int quadnode_cast(lua_State *L)
 		lua_pushnil(L);
 	return 1;
 }
-/*
-	void Set_rotate_around_world_origo(bool t);
-*/
-static int quadnode_look_at(lua_State *L)
+
+static int quadnode_set_texture(lua_State *L)
 {
 	shared_ptr<Quadnode> quadnode = check_quadnode(L, 1);
-//	quadnode->Look_at(vector);
+	shared_ptr<Bitmap> bitmap = check_bitmap(L, 2);
+	quadnode->Set_texture(bitmap);
+	return 0;
+}
+
+static int quadnode_set_corners(lua_State *L)
+{
+	shared_ptr<Quadnode> quadnode = check_quadnode(L, 1);
+	Vector3 corners[4];
+	if(lua_istable(L, 2))
+	{
+		for(int i=1; i<=4; ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_gettable(L, 2);
+			corners[i-1] = check_vector3(L, -1);
+		}
+		lua_pop(L, 4);
+	}
+	quadnode->Set_corners(corners);
 	return 0;
 }
 
 static const luaL_reg quadnode_methods[] = {
 	{"new", quadnode_new},
 	{"cast", quadnode_cast},
-	{"look_at", quadnode_look_at},
+	{"set_texture", quadnode_set_texture},
+	{"set_corners", quadnode_set_corners},
 	{0,0}
 };
 
