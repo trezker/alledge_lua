@@ -2,7 +2,7 @@
 #include "../alledge_lua/Cameranode.h"
 #include "../alledge_lua/Vector3.h"
 #include "alledge/Cameranode.h"
-#include <stdio.h>
+#include <cstdio>
 
 namespace alledge_lua
 {
@@ -60,9 +60,7 @@ static int cameranode_cast(lua_State *L)
 		lua_pushnil(L);
 	return 1;
 }
-/*
-	void Set_rotate_around_world_origo(bool t);
-*/
+
 static int cameranode_look_at(lua_State *L)
 {
 	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
