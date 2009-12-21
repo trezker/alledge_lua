@@ -13,7 +13,7 @@ solution (lib_name)
 		libdirs { "../lib" }
 		includedirs { "../include" }
 		links (dependencies)
---		postbuildcommands { "cp lib/liballua.so ../test/liballua.so", "cd ../test && lua unittest_main.lua" }
+		postbuildcommands { "cp lib/liballedge_lua.so ../liballedge_lua.so" }
 
 		
 newaction {

@@ -130,12 +130,18 @@ while not quit do
 		end
 	end
 
-	texture:draw(10, 10, 0)
 	
 	--Todo: some gl depth and stuff need to be done.
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
+	alledge_lua.gl.enable(alledge_lua.gl.DEPTH_TEST)
+	alledge_lua.gl.clear(alledge_lua.gl.DEPTH_BUFFER_BIT)
+
 	root:apply()
+
+	alledge_lua.gl.disable(alledge_lua.gl.DEPTH_TEST)
 	alledge_lua.pop_view()
+
+	texture:draw(10, 10, 0)
 
 	allegro5.display.flip()
 	allegro5.bitmap.clear_to_color (allegro5.color.map_rgba(0, 0, 0, 0))

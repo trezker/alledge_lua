@@ -30,6 +30,43 @@ static int pop_view(lua_State *L)
 	return 0;
 }
 
+static int gl_enable(lua_State *L)
+{
+	int en = luaL_checknumber(L, 1);
+	glEnable(en);
+	return 0;
+}
+
+static int gl_disable(lua_State *L)
+{
+	int en = luaL_checknumber(L, 1);
+	glDisable(en);
+	return 0;
+}
+
+static int gl_clear(lua_State *L)
+{
+	int en = luaL_checknumber(L, 1);
+	glClear(en);
+	return 0;
+}
+
+static const luaL_reg alledge_lua_gl_methods[] = {
+	{"enable", gl_enable},
+	{"disable", gl_disable},
+	{"clear", gl_clear},
+	{NULL, NULL}
+};
+
+static int gl_register_enum(lua_State *L)
+{
+	lua_pushinteger(L, GL_DEPTH_TEST);
+	lua_setfield(L, -2, "DEPTH_TEST");
+
+	lua_pushinteger(L, GL_DEPTH_BUFFER_BIT);
+	lua_setfield(L, -2, "DEPTH_BUFFER_BIT");
+}
+
 static const luaL_reg alledge_lua_lib[] = {
 	{"init_perspective_view", init_perspective_view},
 	{"pop_view", pop_view},
@@ -41,6 +78,12 @@ extern "C"
 int luaopen_liballedge_lua(lua_State* L)
 {
 	luaL_register (L, "alledge_lua", alledge_lua_lib);
+	
+	lua_newtable (L);
+	luaL_register(L, NULL, alledge_lua_gl_methods);
+	gl_register_enum(L);
+	lua_setfield(L, -2, "gl");
+
 	register_vector3(L);
 	register_scenenode(L);
 	register_cameranode(L);
