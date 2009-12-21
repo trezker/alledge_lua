@@ -7,6 +7,7 @@ extern "C" {
 #include "../alledge_lua/Vector3.h"
 #include "../alledge_lua/Scenenode.h"
 #include "../alledge_lua/Cameranode.h"
+#include "../alledge_lua/Transformnode.h"
 #include "../alledge_lua/Quadnode.h"
 #include "../alledge_lua/Bitmap.h"
 #include "alledge/View.h"
@@ -88,6 +89,7 @@ int luaopen_liballedge_lua(lua_State* L)
 	register_scenenode(L);
 	register_cameranode(L);
 	register_quadnode(L);
+	register_transformnode(L);
 	register_bitmap(L);
 	lua_pop(L, 1);
 	return 0;

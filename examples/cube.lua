@@ -97,11 +97,11 @@ while not quit do
 	end
 
 	if event.type == allegro5.keyboard.EVENT_UP then
-		if event.keycode == allegro5.keyboard.KEY_S then
+		if event.keycode == allegro5.keyboard.KEY_W then
 			pos = camera:get_position() + camera:get_front()
 			camera:set_position(pos)
 		end
-		if event.keycode == allegro5.keyboard.KEY_W then
+		if event.keycode == allegro5.keyboard.KEY_S then
 			pos = camera:get_position() - camera:get_front()
 			camera:set_position(pos)
 		end
@@ -125,13 +125,11 @@ while not quit do
 
 	if event.type == allegro5.mouse.EVENT_AXES then
 		if b then
-			rot = camera:get_rotation() + alledge_lua.vector3.new(0, event.dx, 0)
+			rot = camera:get_rotation() + alledge_lua.vector3.new(0, -event.dx, 0)
 			camera:set_rotation(rot)
 		end
 	end
 
-	
-	--Todo: some gl depth and stuff need to be done.
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
 	alledge_lua.gl.enable(alledge_lua.gl.DEPTH_TEST)
 	alledge_lua.gl.clear(alledge_lua.gl.DEPTH_BUFFER_BIT)
