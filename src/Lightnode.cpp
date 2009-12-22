@@ -78,11 +78,112 @@ static int lightnode_set_position(lua_State *L)
 	return 0;
 }
 
+static int lightnode_set_common(lua_State *L, float *v)
+{
+	if(lua_istable(L, 2))
+	{
+		for(int i=1; i<=4; ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_gettable(L, 2);
+			v[i-1] = luaL_checknumber(L, -1);
+		}
+		lua_pop(L, 4);
+	}
+	else if (lua_gettop(L)>=3) {
+		v[0] = luaL_checknumber(L, 2);
+		v[1] = luaL_checknumber(L, 3);
+		v[2] = luaL_checknumber(L, 4);
+		if (lua_gettop(L)==4) {
+			v[3] = luaL_checknumber(L, 5);
+		}
+		else
+		{
+			v[3] = 1;
+		}
+	}
+}
+
+static int lightnode_set_ambient(lua_State *L)
+{
+	shared_ptr<Lightnode> lightnode = check_lightnode(L, 1);
+	float v[4];
+	lightnode_set_common(L, v);
+	lightnode->Set_ambient(v);
+	return 0;
+}
+
+static int lightnode_set_diffuse(lua_State *L)
+{
+	shared_ptr<Lightnode> lightnode = check_lightnode(L, 1);
+	float v[4];
+	lightnode_set_common(L, v);
+	lightnode->Set_diffuse(v);
+	return 0;
+}
+
+static int lightnode_set_specular(lua_State *L)
+{
+	shared_ptr<Lightnode> lightnode = check_lightnode(L, 1);
+	float v[4];
+	lightnode_set_common(L, v);
+	lightnode->Set_specular(v);
+	return 0;
+}
+
+static int lightnode_get_ambient(lua_State *L)
+{
+	shared_ptr<Lightnode> lightnode = check_lightnode(L, 1);
+	float v[4];
+	lightnode->Get_ambient(v);
+	lua_newtable(L);
+	for(int i=0; i<4; ++i)
+	{
+		lua_pushnumber(L, v[i]);
+		lua_rawseti (L, -2, i+1);
+	}
+	return 1;
+}
+
+static int lightnode_get_diffuse(lua_State *L)
+{
+	shared_ptr<Lightnode> lightnode = check_lightnode(L, 1);
+	float v[4];
+	lightnode->Get_diffuse(v);
+	lua_newtable(L);
+	for(int i=0; i<4; ++i)
+	{
+		lua_pushnumber(L, v[i]);
+		lua_rawseti (L, -2, i+1);
+	}
+	return 1;
+}
+
+static int lightnode_get_specular(lua_State *L)
+{
+	shared_ptr<Lightnode> lightnode = check_lightnode(L, 1);
+	float v[4];
+	lightnode->Get_specular(v);
+	lua_newtable(L);
+	for(int i=0; i<4; ++i)
+	{
+		lua_pushnumber(L, v[i]);
+		lua_rawseti (L, -2, i+1);
+	}
+	return 1;
+}
+
 static const luaL_reg lightnode_methods[] = {
 	{"new", lightnode_new},
 	{"cast", lightnode_cast},
 //	{"get_position", lightnode_get_position},
 	{"set_position", lightnode_set_position},
+	{"set_ambient", lightnode_set_ambient},
+	{"set_diffuse", lightnode_set_diffuse},
+	{"set_specular", lightnode_set_specular},
+	{"get_ambient", lightnode_get_ambient},
+	{"get_diffuse", lightnode_get_diffuse},
+	{"get_specular", lightnode_get_specular},
 	{0,0}
 };
 

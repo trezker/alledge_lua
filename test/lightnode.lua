@@ -1,6 +1,6 @@
 require('luaunit')
 require('liballedge_lua')
-USE_EXPECTED_ACTUAL_IN_ASSERT_EQUALS = true
+USE_EXPECTED_ACTUAL_IN_ASSERT_EQUALS = false
 assertEqualsDelta = function(expected, actual, delta)
 	assert(math.abs(expected-actual)<delta)
 end
@@ -31,6 +31,24 @@ function Test_lightnode:test03_position()
 	lightnode:set_position(setpos, true)
 --	getpos = lightnode:get_position()
 --	assertEquals(setpos, getpos)
+end
+
+function Test_lightnode:test04_components()
+	lightnode = alledge_lua.lightnode.new()
+	setambient = {1, 2, 3, 4}
+	lightnode:set_ambient(setambient)
+	getambient = lightnode:get_ambient()
+	setdiffuse = {5, 6, 7, 8}
+	lightnode:set_diffuse(setdiffuse)
+	getdiffuse = lightnode:get_diffuse()
+	setspecular = {9, 10, 11, 12}
+	lightnode:set_specular(setspecular)
+	getspecular = lightnode:get_specular()
+	for i = 1, 4 do
+		assertEquals(setambient[i], getambient[i])
+		assertEquals(setdiffuse[i], getdiffuse[i])
+		assertEquals(setspecular[i], getspecular[i])
+	end
 end
 
 LuaUnit:run() -- run all tests
