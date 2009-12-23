@@ -67,6 +67,9 @@ static int gl_register_enum(lua_State *L)
 
 	lua_pushinteger(L, GL_DEPTH_BUFFER_BIT);
 	lua_setfield(L, -2, "DEPTH_BUFFER_BIT");
+
+	lua_pushinteger(L, GL_LIGHTING);
+	lua_setfield(L, -2, "LIGHTING");
 }
 
 static const luaL_reg alledge_lua_lib[] = {
