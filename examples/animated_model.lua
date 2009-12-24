@@ -8,6 +8,8 @@ allegro5.init()
 allegro5.keyboard.install()
 allegro5.mouse.install()
 allegro5.bitmap.init_image_addon ()
+allegro5.font.init_addon ()
+allegro5.font.init_ttf_addon ()
 
 allegro5.display.set_new_flags(allegro5.display.WINDOWED)
 display = allegro5.display.create(640, 480)
@@ -19,12 +21,15 @@ event_queue:register_event_source(keyboard)
 mouse = allegro5.mouse.get_event_source()
 event_queue:register_event_source(mouse)
 
+font = allegro5.font.load_ttf("data/DejaVuSans.ttf", 23, 0)
+
+
 
 root = alledge_lua.scenenode.new()
 
 camera = alledge_lua.cameranode.new()
-camera:set_position(alledge_lua.vector3.new(0, 0, 10));
-camera:set_rotation(alledge_lua.vector3.new(0, 0, 0));
+camera:set_position(alledge_lua.vector3.new(0, 50, 50));
+camera:set_rotation(alledge_lua.vector3.new(-45, 0, 0));
 root:attach_node(camera);
 
 light = alledge_lua.lightnode.new()
@@ -44,8 +49,25 @@ animated_model:load_animation("data/Male_run.md5anim", "run")
 animated_model_instance = alledge_lua.animated_model_instance.new()
 animated_model_instance:set_model(animated_model)
 animated_model_instance:play_animation("walk", true)
-
 alledge_lua.scenenode.attach_node(transform, animated_model_instance)
+
+men = {}
+
+i = 0
+for z = 1, 6 do
+	for x = 1, 10 do
+		i = i+1
+		men[i] = {}
+		men[i].transform = alledge_lua.transformnode.new()
+		men[i].transform:set_rotation(alledge_lua.vector3.new(0, 90, 0))
+		men[i].transform:set_position(alledge_lua.vector3.new((-x)*10, 0, (z-3)*10))
+		alledge_lua.scenenode.attach_node(light, men[i].transform)
+		men[i].animated_model_instance = alledge_lua.animated_model_instance.new()
+		men[i].animated_model_instance:set_model(animated_model)
+		men[i].animated_model_instance:play_animation("walk", true)
+		alledge_lua.scenenode.attach_node(men[i].transform, men[i].animated_model_instance)
+	end
+end
 
 
 fov = 45
@@ -55,13 +77,23 @@ width = 640
 height = 480
 
 last_time = allegro5.current_time()
-
+fps = 0
+fps_counter = 0
+last_fps = last_time
 b = false
 
 while not quit do
 	current_time = allegro5.current_time()
 	dt = current_time - last_time
 	last_time = current_time
+
+	if current_time - last_fps > 1 then
+		fps = fps_counter
+		fps_counter = 0
+		last_fps = current_time
+	end
+
+	fps_counter = fps_counter + 1
 
 	event = event_queue:get_next_event()
 	if event.type == allegro5.display.EVENT_CLOSE or event.type == allegro5.keyboard.EVENT_DOWN and event.keycode == allegro5.keyboard.KEY_ESCAPE then
@@ -105,6 +137,15 @@ while not quit do
 	transform:set_rotation(transform:get_rotation() + alledge_lua.vector3.new(10, 10, 0)*dt)
 	animated_model_instance:update(dt)
 
+	for k, v in pairs(men) do
+		new_position = v.transform:get_position() + alledge_lua.vector3.new(5, 0, 0)*dt
+		if new_position.x > 50 then
+			new_position.x = -50
+		end
+		v.transform:set_position(new_position);
+		v.animated_model_instance:update(dt)
+	end
+
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
 	alledge_lua.gl.enable(alledge_lua.gl.DEPTH_TEST)
 	alledge_lua.gl.enable(alledge_lua.gl.LIGHTING);
@@ -112,8 +153,13 @@ while not quit do
 
 	root:apply()
 
+	alledge_lua.gl.disable(alledge_lua.gl.LIGHTING);
 	alledge_lua.gl.disable(alledge_lua.gl.DEPTH_TEST)
 	alledge_lua.pop_view()
+
+	allegro5.primitives.draw_filled_rectangle(5, 5, 120, 40, allegro5.color.map_rgb(255, 0, 0))
+	font:draw_text (10, 10, 0, "FPS: " .. fps)
+
 
 	allegro5.display.flip()
 	allegro5.bitmap.clear_to_color (allegro5.color.map_rgba(0, 0, 0, 0))
