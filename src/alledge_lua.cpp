@@ -12,7 +12,7 @@ extern "C" {
 #include "../alledge_lua/Lightnode.h"
 #include "../alledge_lua/Bitmap.h"
 #include "../alledge_lua/Animated_model.h"
-#include "../alledge_lua/Animated_model_instance.h"
+#include "../alledge_lua/Animated_model_node.h"
 #include "alledge/View.h"
 
 namespace alledge_lua
@@ -98,7 +98,7 @@ int luaopen_liballedge_lua(lua_State* L)
 	register_transformnode(L);
 	register_lightnode(L);
 	register_animated_model(L);
-	register_animated_model_instance(L);
+	register_animated_model_node(L);
 	register_bitmap(L);
 	lua_pop(L, 1);
 	return 0;
