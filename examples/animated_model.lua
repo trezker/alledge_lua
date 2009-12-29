@@ -47,16 +47,24 @@ animated_model:load_animation("data/Male_walk.md5anim", "walk")
 animated_model:load_animation("data/Male_run.md5anim", "run")
 animated_model:load_animation("data/Male_breathe.md5anim", "breathe")
 
+	print("So far")	
+breathe_instance = alledge_lua.animated_model_instance.new()
+breathe_instance:set_model(animated_model)
+breathe_instance:play_animation("breathe", true)
+
+walk_instance = alledge_lua.animated_model_instance.new()
+walk_instance:set_model(animated_model)
+walk_instance:play_animation("walk", true)
+
 animated_model_node = alledge_lua.animated_model_node.new()
-animated_model_node:set_model(animated_model)
-animated_model_node:play_animation("breathe", true)
+animated_model_node:set_model(breathe_instance)
 alledge_lua.scenenode.attach_node(transform, animated_model_node)
 
 men = {}
 
 i = 0
-for z = 1, 6 do
-	for x = 1, 10 do
+for z = 1, 25 do
+	for x = 1, 40 do
 		i = i+1
 		men[i] = {}
 		men[i].transform = alledge_lua.transformnode.new()
@@ -64,8 +72,7 @@ for z = 1, 6 do
 		men[i].transform:set_position(alledge_lua.vector3.new((-x)*10, 0, (z-3)*10))
 		alledge_lua.scenenode.attach_node(light, men[i].transform)
 		men[i].animated_model_node = alledge_lua.animated_model_node.new()
-		men[i].animated_model_node:set_model(animated_model)
-		men[i].animated_model_node:play_animation("walk", true)
+		men[i].animated_model_node:set_model(walk_instance)
 		alledge_lua.scenenode.attach_node(men[i].transform, men[i].animated_model_node)
 	end
 end
@@ -187,20 +194,22 @@ while not quit do
 	
 		event = event_queue:get_next_event()
 	end
-	
+
 	update(dt)
 	
 --	transform:set_rotation(transform:get_rotation() + alledge_lua.vector3.new(10, 10, 0)*dt)
-	animated_model_node:update(dt)
+--	animated_model_node:update(dt)
+	walk_instance:update(dt)
+	breathe_instance:update(dt)
 
 	v = men[1]
 	for k, v in pairs(men) do
 		new_position = v.transform:get_position() + alledge_lua.vector3.new(5, 0, 0)*dt
-		if new_position.x > 50 then
-			new_position.x = -50
+		if new_position.x > 200 then
+			new_position.x = -200
 		end
 		v.transform:set_position(new_position);
-		v.animated_model_node:update(dt)
+--		v.animated_model_node:update(dt)
 	end
 
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
