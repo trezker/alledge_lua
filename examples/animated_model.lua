@@ -52,9 +52,19 @@ breathe_instance = alledge_lua.animated_model_instance.new()
 breathe_instance:set_model(animated_model)
 breathe_instance:play_animation("breathe", true)
 
-walk_instance = alledge_lua.animated_model_instance.new()
-walk_instance:set_model(animated_model)
-walk_instance:play_animation("walk", true)
+walk_instances = {}
+walk_instances[1] = alledge_lua.animated_model_instance.new()
+walk_instances[1]:set_model(animated_model)
+walk_instances[1]:play_animation("walk", true)
+walk_instances[2] = alledge_lua.animated_model_instance.new()
+walk_instances[2]:set_model(animated_model)
+walk_instances[2]:play_animation("walk", true)
+walk_instances[2]:update(0.5)
+walk_instances[3] = alledge_lua.animated_model_instance.new()
+walk_instances[3]:set_model(animated_model)
+walk_instances[3]:play_animation("walk", true)
+walk_instances[3]:update(1.0)
+
 
 animated_model_node = alledge_lua.animated_model_node.new()
 animated_model_node:set_model(breathe_instance)
@@ -72,7 +82,7 @@ for z = 1, 25 do
 		men[i].transform:set_position(alledge_lua.vector3.new((-x)*10, 0, (z-3)*10))
 		alledge_lua.scenenode.attach_node(light, men[i].transform)
 		men[i].animated_model_node = alledge_lua.animated_model_node.new()
-		men[i].animated_model_node:set_model(walk_instance)
+		men[i].animated_model_node:set_model(walk_instances[math.random(3)])
 		alledge_lua.scenenode.attach_node(men[i].transform, men[i].animated_model_node)
 	end
 end
@@ -199,7 +209,9 @@ while not quit do
 	
 --	transform:set_rotation(transform:get_rotation() + alledge_lua.vector3.new(10, 10, 0)*dt)
 --	animated_model_node:update(dt)
-	walk_instance:update(dt)
+	for i = 1, 3 do
+		walk_instances[i]:update(dt)
+	end
 	breathe_instance:update(dt)
 
 	v = men[1]

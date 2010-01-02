@@ -1,8 +1,3 @@
-extern "C" {
-#include <lua.h>
-#include <lualib.h>
-#include <lauxlib.h>
-}
 
 #include "../alledge_lua/Vector3.h"
 #include "../alledge_lua/Scenenode.h"

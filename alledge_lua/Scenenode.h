@@ -1,10 +1,10 @@
-#ifndef allua_scenenode_h
-#define allua_scenenode_h
+#ifndef alledge_scenenode_h
+#define alledge_scenenode_h
 
 extern "C" {
-#include <lua.h>
-#include <lualib.h>
-#include <lauxlib.h>
+#include <lua5.1/lua.h>
+#include <lua5.1/lualib.h>
+#include <lua5.1/lauxlib.h>
 }
 #include "alledge/Scenenode.h"
 #include "alledge/shared_ptr.h"
