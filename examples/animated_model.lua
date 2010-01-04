@@ -70,6 +70,17 @@ animated_model_node = alledge_lua.animated_model_node.new()
 animated_model_node:set_model(breathe_instance)
 alledge_lua.scenenode.attach_node(transform, animated_model_node)
 
+
+static_model = alledge_lua.static_model.new()
+static_model:load_model("data/handgun.tmf")
+texture = alledge_lua.bitmap.new()
+b = texture:load("data/handgun.png")
+static_model:set_texture(texture)
+
+static_model_node = alledge_lua.static_model_node.new()
+static_model_node:set_model(static_model)
+animated_model_node:attach_to_bone("Hand.Grip.L", static_model_node)
+
 men = {}
 
 i = 0

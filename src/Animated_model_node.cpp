@@ -62,52 +62,12 @@ static int animated_model_node_cast(lua_State *L)
 		lua_pushnil(L);
 	return 1;
 }
-/*
-static int animated_model_node_play_animation(lua_State *L)
-{
-	shared_ptr<Animated_model_node> animated_model_node = check_animated_model_node(L, 1);
-	const char* name = luaL_checkstring(L, 2);
-	bool loop = lua_toboolean(L, 3);
-	animated_model_node->Play_animation(name, loop);
-	return 0;
-}
 
-static int animated_model_node_pause_animation(lua_State *L)
-{
-	shared_ptr<Animated_model_node> animated_model_node = check_animated_model_node(L, 1);
-	bool loop = lua_toboolean(L, 2);
-	animated_model_node->Pause_animation(loop);
-	return 0;
-}
-
-static int animated_model_node_animation_has_ended(lua_State *L)
-{
-	shared_ptr<Animated_model_node> animated_model_node = check_animated_model_node(L, 1);
-	lua_pushboolean(L, animated_model_node->Animation_has_ended());
-	return 1;
-}
-*/
 static int animated_model_node_set_model(lua_State *L)
 {
 	shared_ptr<Animated_model_node> animated_model_node = check_animated_model_node(L, 1);
 	shared_ptr<Animated_model_instance> model = check_animated_model_instance(L, 2);
 	animated_model_node->Set_model(model);
-	return 0;
-}
-/*
-static int animated_model_node_add_model(lua_State *L)
-{
-	shared_ptr<Animated_model_node> animated_model_node = check_animated_model_node(L, 1);
-	shared_ptr<Animated_model> model = check_animated_model(L, 2);
-	animated_model_node->Add_model(model);
-	return 0;
-}
-
-static int animated_model_node_remove_model(lua_State *L)
-{
-	shared_ptr<Animated_model_node> animated_model_node = check_animated_model_node(L, 1);
-	shared_ptr<Animated_model> model = check_animated_model(L, 2);
-	animated_model_node->Remove_model(model);
 	return 0;
 }
 
@@ -129,27 +89,13 @@ static int animated_model_node_detach_from_bone(lua_State *L)
 	return 0;
 }
 
-static int animated_model_node_update(lua_State *L)
-{
-	shared_ptr<Animated_model_node> animated_model_node = check_animated_model_node(L, 1);
-	float dt = luaL_checknumber(L, 2);
-	animated_model_node->Update(dt);
-	return 0;
-}
-*/
 static const luaL_reg animated_model_node_methods[] = {
 	{"new", animated_model_node_new},
 	{"cast", animated_model_node_cast},
-/*	{"play_animation", animated_model_node_play_animation},
-	{"pause_animation", animated_model_node_pause_animation},
-	{"animation_has_ended", animated_model_node_animation_has_ended},
-*/	{"set_model", animated_model_node_set_model},
-/*	{"add_model", animated_model_node_add_model},
-	{"remove_model", animated_model_node_remove_model},
+	{"set_model", animated_model_node_set_model},
 	{"attach_to_bone", animated_model_node_attach_to_bone},
 	{"detach_from_bone", animated_model_node_detach_from_bone},
-	{"update", animated_model_node_update},
-*/	{0,0}
+	{0,0}
 };
 
 /* GC and meta
