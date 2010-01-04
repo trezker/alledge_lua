@@ -1,5 +1,5 @@
-#ifndef allua_bitmap_h
-#define allua_bitmap_h
+#ifndef alledge_bitmap_h
+#define alledge_bitmap_h
 
 extern "C" {
 #include <lua5.1/lua.h>

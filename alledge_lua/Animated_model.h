@@ -1,5 +1,5 @@
-#ifndef allua_animated_model_h
-#define allua_animated_model_h
+#ifndef alledge_animated_model_h
+#define alledge_animated_model_h
 
 extern "C" {
 #include <lua5.1/lua.h>

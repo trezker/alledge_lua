@@ -12,12 +12,12 @@ extern "C" {
 namespace alledge_lua
 {
 
-/* Function: allua_register_color
+/* Function: alledge_register_color
  * Registers Color functionality to the lua state.
  * */
 int register_vector3 (lua_State* L);
 
-/* Function: allua_check_color
+/* Function: alledge_check_color
  * Returns:
  * Pointer to Color instance.
  * */

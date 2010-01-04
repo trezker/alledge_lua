@@ -1,5 +1,5 @@
-#ifndef allua_quadnode_h
-#define allua_quadnode_h
+#ifndef alledge_quadnode_h
+#define alledge_quadnode_h
 
 extern "C" {
 #include <lua5.1/lua.h>

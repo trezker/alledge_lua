@@ -1,5 +1,5 @@
-#ifndef allua_lightnode_h
-#define allua_lightnode_h
+#ifndef alledge_lightnode_h
+#define alledge_lightnode_h
 
 extern "C" {
 #include <lua5.1/lua.h>

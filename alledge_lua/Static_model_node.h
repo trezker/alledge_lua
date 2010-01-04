@@ -1,5 +1,5 @@
-#ifndef allua_static_model_node_h
-#define allua_static_model_node_h
+#ifndef alledge_static_model_node_h
+#define alledge_static_model_node_h
 
 extern "C" {
 #include <lua5.1/lua.h>

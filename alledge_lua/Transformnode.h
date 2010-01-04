@@ -1,5 +1,5 @@
-#ifndef allua_transformnode_h
-#define allua_transformnode_h
+#ifndef alledge_transformnode_h
+#define alledge_transformnode_h
 
 extern "C" {
 #include <lua5.1/lua.h>

@@ -1,5 +1,5 @@
-#ifndef allua_cameranode_h
-#define allua_cameranode_h
+#ifndef alledge_cameranode_h
+#define alledge_cameranode_h
 
 extern "C" {
 #include <lua5.1/lua.h>
