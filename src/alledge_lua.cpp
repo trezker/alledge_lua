@@ -4,6 +4,7 @@
 #include "../alledge_lua/Cameranode.h"
 #include "../alledge_lua/Transformnode.h"
 #include "../alledge_lua/Quadnode.h"
+#include "../alledge_lua/Linenode.h"
 #include "../alledge_lua/Lightnode.h"
 #include "../alledge_lua/Bitmap.h"
 #include "../alledge_lua/Animated_model.h"
@@ -93,6 +94,7 @@ int luaopen_liballedge_lua(lua_State* L)
 	register_scenenode(L);
 	register_cameranode(L);
 	register_quadnode(L);
+	register_linenode(L);
 	register_transformnode(L);
 	register_lightnode(L);
 	register_animated_model(L);
