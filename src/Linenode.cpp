@@ -82,11 +82,11 @@ static int linenode_set_common(lua_State *L, float *v)
 		}
 		lua_pop(L, 4);
 	}
-	else if (lua_gettop(L)>=3) {
+	else if (lua_gettop(L)>=4) {
 		v[0] = luaL_checknumber(L, 2);
 		v[1] = luaL_checknumber(L, 3);
 		v[2] = luaL_checknumber(L, 4);
-		if (lua_gettop(L)==4) {
+		if (lua_gettop(L)==5) {
 			v[3] = luaL_checknumber(L, 5);
 		}
 		else
