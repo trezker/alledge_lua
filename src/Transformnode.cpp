@@ -75,6 +75,13 @@ static int transformnode_get_rotation(lua_State *L)
 	return 1;
 }
 
+static int transformnode_get_scale(lua_State *L)
+{
+	shared_ptr<Transformnode> transformnode = check_transformnode(L, 1);
+	push_vector3(L, transformnode->Get_scale());
+	return 1;
+}
+
 static int transformnode_set_position(lua_State *L)
 {
 	shared_ptr<Transformnode> transformnode = check_transformnode(L, 1);
@@ -91,13 +98,23 @@ static int transformnode_set_rotation(lua_State *L)
 	return 0;
 }
 
+static int transformnode_set_scale(lua_State *L)
+{
+	shared_ptr<Transformnode> transformnode = check_transformnode(L, 1);
+	Vector3 vector = check_vector3(L, 2);
+	transformnode->Set_rotation(vector);
+	return 0;
+}
+
 static const luaL_reg transformnode_methods[] = {
 	{"new", transformnode_new},
 	{"cast", transformnode_cast},
 	{"get_position", transformnode_get_position},
 	{"get_rotation", transformnode_get_rotation},
+	{"get_scale", transformnode_get_scale},
 	{"set_position", transformnode_set_position},
 	{"set_rotation", transformnode_set_rotation},
+	{"set_scale", transformnode_set_scale},
 	{0,0}
 };
 
