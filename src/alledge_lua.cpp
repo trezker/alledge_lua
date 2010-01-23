@@ -12,6 +12,7 @@
 #include "../alledge_lua/Animated_model_node.h"
 #include "../alledge_lua/Static_model.h"
 #include "../alledge_lua/Static_model_node.h"
+#include "../alledge_lua/Heightmap.h"
 #include "alledge/View.h"
 
 namespace alledge_lua
@@ -103,6 +104,7 @@ int luaopen_liballedge_lua(lua_State* L)
 	register_static_model(L);
 	register_static_model_node(L);
 	register_bitmap(L);
+	register_heightmap(L);
 	lua_pop(L, 1);
 	return 0;
 }
