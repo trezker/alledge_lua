@@ -23,7 +23,7 @@ event_queue:register_event_source(mouse)
 root = alledge_lua.scenenode.new()
 
 camera = alledge_lua.cameranode.new()
-camera:set_position(alledge_lua.vector3.new(0, 0, 10));
+camera:set_position(alledge_lua.vector3.new(0, 10, 10));
 camera:set_rotation(alledge_lua.vector3.new(0, 0, 0));
 root:attach_node(camera);
 
@@ -58,7 +58,7 @@ end
 
 heightmap = alledge_lua.heightmap.new()
 heightmap:set_tilesize(1);
-heightmap:resize(10, 5);
+heightmap:resize(50, 30);
 heightmap:set_texture(texture, 0);
 heightmap:set_texture(texture2, 1);
 heightmap:set_splat_texture(splat_texture);
@@ -101,24 +101,55 @@ while not quit do
 			pos = camera:get_position() + camera:get_right()
 			camera:set_position(pos)
 		end
+
+		if event.keycode == allegro5.keyboard.KEY_R then
+			pos = camera:get_position() + camera:get_up()
+			camera:set_position(pos)
+		end
+		if event.keycode == allegro5.keyboard.KEY_F then
+			pos = camera:get_position() - camera:get_up()
+			camera:set_position(pos)
+		end
 	end
 
 	if event.type == allegro5.mouse.EVENT_DOWN then
-		b = true
+		if event.button == 1 then
+			lmb = true
+		end
+		if event.button == 2 then
+			rmb = true
+		end
 	end
 
 	if event.type == allegro5.mouse.EVENT_UP then
-		b = false
+		if event.button == 1 then
+			lmb = false
+		end
+		if event.button == 2 then
+			rmb = false
+		end
 	end
 
 	if event.type == allegro5.mouse.EVENT_AXES then
-		if b then
-			rot = camera:get_rotation() + alledge_lua.vector3.new(0, -event.dx, 0)
+		if lmb then
+			rot = camera:get_rotation() + alledge_lua.vector3.new(-event.dy, -event.dx, 0)
 			camera:set_rotation(rot)
 		end
+		mouse_x = event.x
+		mouse_y = event.y
+	end
+
+	if rmb then
+		alledge_lua.init_perspective_view(fov, width/height, near, far)
+		oglpoint = camera:unproject(mouse_x, mouse_y)
+		alledge_lua.pop_view()
+
+--		std::cout<<"oglpoint x, y, z: "<<oglpoint.x<<", "<<oglpoint.y<<", "<<oglpoint.z<<std::endl;
+		curve = {-1, -.7, 0, .3, 0}
+		heightmap:apply_brush(oglpoint.x, oglpoint.z, 10, 1*dt, 5, curve);
 	end
 	
-	transform:set_rotation(transform:get_rotation() + alledge_lua.vector3.new(10, 10, 0)*dt)
+--	transform:set_rotation(transform:get_rotation() + alledge_lua.vector3.new(10, 10, 0)*dt)
 
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
 	alledge_lua.gl.enable(alledge_lua.gl.DEPTH_TEST)

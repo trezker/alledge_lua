@@ -104,6 +104,46 @@ static int heightmap_resize(lua_State *L)
 	return 0;
 }
 
+static int heightmap_get_height(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	int x = luaL_checkint(L, 2);
+	int z = luaL_checkint(L, 3);
+	lua_pushnumber(L, heightmap->Get_height(x, z));
+	return 1;
+}
+
+static int heightmap_recalc_normals(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	heightmap->Recalc_normals();
+	return 0;
+}
+
+/*
+void Apply_brush(float x, float z, float brush_size, float brush_pressure, const float *brush, int brush_points);
+*/
+static int heightmap_apply_brush(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	float x = luaL_checknumber(L, 2);
+	float z = luaL_checknumber(L, 3);
+	float brush_size = luaL_checknumber(L, 4);
+	float brush_pressure = luaL_checknumber(L, 5);
+	int brush_points = luaL_checkint(L, 6);
+	float brush[brush_points];
+	int i = 1;
+	for(int i=0; i<brush_points; ++i)
+	{
+		lua_pushinteger(L, i+1);
+		lua_gettable(L, 7);
+		brush[i] = luaL_checknumber(L, -1);
+	}
+	lua_pop(L, brush_points);
+	heightmap->Apply_brush(x, z, brush_size, brush_pressure, brush, brush_points);
+	return 0;
+}
+
 static const luaL_reg heightmap_methods[] = {
 	{"new", heightmap_new},
 	{"cast", heightmap_cast},
@@ -112,6 +152,9 @@ static const luaL_reg heightmap_methods[] = {
 	{"load", heightmap_load},
 	{"set_tilesize", heightmap_set_tilesize},
 	{"resize", heightmap_resize},
+	{"get_height", heightmap_get_height},
+	{"recalc_normals", heightmap_recalc_normals},
+	{"apply_brush", heightmap_apply_brush},
 	{0,0}
 };
 

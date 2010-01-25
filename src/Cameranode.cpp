@@ -2,6 +2,8 @@
 #include "../alledge_lua/Cameranode.h"
 #include "../alledge_lua/Vector3.h"
 #include "alledge/Cameranode.h"
+#include "alledge/View.h"
+
 #include <cstdio>
 
 namespace alledge_lua
@@ -128,6 +130,15 @@ static int cameranode_set_rotate_around_world_origo(lua_State *L)
 	return 0;
 }
 
+static int cameranode_unproject(lua_State *L)
+{
+	shared_ptr<Cameranode> cameranode = check_cameranode(L, 1);
+	int x = luaL_checknumber(L, 2);
+	int y = luaL_checknumber(L, 3);
+	push_vector3(L, Unproject(x, y, cameranode));
+	return 1;
+}
+
 static const luaL_reg cameranode_methods[] = {
 	{"new", cameranode_new},
 	{"cast", cameranode_cast},
@@ -140,6 +151,7 @@ static const luaL_reg cameranode_methods[] = {
 	{"set_position", cameranode_set_position},
 	{"set_rotation", cameranode_set_rotation},
 	{"set_rotate_around_world_origo", cameranode_set_rotate_around_world_origo},
+	{"unproject", cameranode_unproject},
 	{0,0}
 };
 
