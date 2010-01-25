@@ -23,14 +23,14 @@ event_queue:register_event_source(mouse)
 root = alledge_lua.scenenode.new()
 
 camera = alledge_lua.cameranode.new()
-camera:set_position(alledge_lua.vector3.new(0, 10, 10));
+camera:set_position(alledge_lua.vector3.new(20, 5, 20));
 camera:set_rotation(alledge_lua.vector3.new(0, 0, 0));
 root:attach_node(camera);
 
 light = alledge_lua.lightnode.new()
 light:set_ambient(.2, .2, .2, 1)
 light:set_diffuse(.8, .8, .8, 1)
-light:set_position(alledge_lua.vector3.new(10, 10, 10), false)
+light:set_position(alledge_lua.vector3.new(1, 1, 1), true)
 alledge_lua.scenenode.attach_node(camera, light)
 
 transform = alledge_lua.transformnode.new()
