@@ -13,6 +13,8 @@
 #include "../alledge_lua/Static_model.h"
 #include "../alledge_lua/Static_model_node.h"
 #include "../alledge_lua/Heightmap.h"
+#include "../alledge_lua/Shader.h"
+#include "../alledge_lua/Shader_program.h"
 #include "alledge/View.h"
 
 namespace alledge_lua
@@ -55,10 +57,21 @@ static int gl_clear(lua_State *L)
 	return 0;
 }
 
+static int gl_colormask(lua_State *L)
+{
+	bool red = lua_toboolean(L, 1);
+	bool green = lua_toboolean(L, 2);
+	bool blue = lua_toboolean(L, 3);
+	bool alpha = lua_toboolean(L, 4);
+	glColorMask(red, green, blue, alpha);
+	return 0;
+}
+
 static const luaL_reg alledge_lua_gl_methods[] = {
 	{"enable", gl_enable},
 	{"disable", gl_disable},
 	{"clear", gl_clear},
+	{"colormask", gl_colormask},
 	{NULL, NULL}
 };
 
@@ -72,6 +85,12 @@ static int gl_register_enum(lua_State *L)
 
 	lua_pushinteger(L, GL_LIGHTING);
 	lua_setfield(L, -2, "LIGHTING");
+
+	lua_pushinteger(L, GL_FRAGMENT_SHADER);
+	lua_setfield(L, -2, "FRAGMENT_SHADER");
+
+	lua_pushinteger(L, GL_VERTEX_SHADER);
+	lua_setfield(L, -2, "VERTEX_SHADER");
 }
 
 static const luaL_reg alledge_lua_lib[] = {
@@ -105,6 +124,8 @@ int luaopen_liballedge_lua(lua_State* L)
 	register_static_model_node(L);
 	register_bitmap(L);
 	register_heightmap(L);
+	register_shader(L);
+	register_shader_program(L);
 	lua_pop(L, 1);
 	return 0;
 }

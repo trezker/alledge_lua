@@ -87,6 +87,14 @@ static int heightmap_load(lua_State *L)
 	return 0;
 }
 
+static int heightmap_set_texture_scale(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	float s = luaL_checknumber(L, 2);
+	heightmap->Set_texture_scale(s);
+	return 0;
+}
+
 static int heightmap_set_tilesize(lua_State *L)
 {
 	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
@@ -110,6 +118,27 @@ static int heightmap_get_height(lua_State *L)
 	int x = luaL_checkint(L, 2);
 	int z = luaL_checkint(L, 3);
 	lua_pushnumber(L, heightmap->Get_height(x, z));
+	return 1;
+}
+
+static int heightmap_get_tilesize(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	lua_pushnumber(L, heightmap->Get_tilesize());
+	return 1;
+}
+
+static int heightmap_get_size_x(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	lua_pushnumber(L, heightmap->Get_size_x());
+	return 1;
+}
+
+static int heightmap_get_size_z(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	lua_pushnumber(L, heightmap->Get_size_z());
 	return 1;
 }
 
@@ -150,9 +179,13 @@ static const luaL_reg heightmap_methods[] = {
 	{"set_splat_texture", heightmap_set_splat_texture},
 	{"set_texture", heightmap_set_texture},
 	{"load", heightmap_load},
+	{"set_texture_scale", heightmap_set_texture_scale},
 	{"set_tilesize", heightmap_set_tilesize},
 	{"resize", heightmap_resize},
 	{"get_height", heightmap_get_height},
+	{"get_tilesize", heightmap_get_tilesize},
+	{"get_size_x", heightmap_get_size_x},
+	{"get_size_z", heightmap_get_size_z},
 	{"recalc_normals", heightmap_recalc_normals},
 	{"apply_brush", heightmap_apply_brush},
 	{0,0}

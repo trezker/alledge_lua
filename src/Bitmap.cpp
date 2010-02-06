@@ -71,6 +71,25 @@ static int bitmap_draw(lua_State *L)
 	return 0;
 }
 
+static int bitmap_draw_scaled(lua_State *L)
+{
+	shared_ptr<Bitmap> bitmap = check_bitmap(L, 1);
+	float x = luaL_checknumber(L, 2);
+	float y = luaL_checknumber(L, 3);
+	float width = luaL_checknumber(L, 4);
+	float height = luaL_checknumber(L, 5);
+	int flags = luaL_checknumber(L, 6);
+	bitmap->Draw_scaled(x, y, width, height, flags);
+	return 0;
+}
+
+static int bitmap_set_target(lua_State *L)
+{
+	shared_ptr<Bitmap> bitmap = check_bitmap(L, 1);
+	bitmap->Set_target();
+	return 0;
+}
+
 static int bitmap_get_opengl_texture(lua_State *L)
 {
 	shared_ptr<Bitmap> bitmap = check_bitmap(L, 1);
@@ -90,6 +109,8 @@ static const luaL_reg bitmap_methods[] = {
 	{"new", bitmap_new},
 	{"load", bitmap_load},
 	{"draw", bitmap_draw},
+	{"draw_scaled", bitmap_draw_scaled},
+	{"set_target", bitmap_set_target},
 	{"get_opengl_texture", bitmap_get_opengl_texture},
 	{"equals",       bitmap_eq},
 	{0,0}
