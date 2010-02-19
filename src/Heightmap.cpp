@@ -3,6 +3,10 @@
 #include "../alledge_lua/Vector3.h"
 #include "../alledge_lua/Bitmap.h"
 #include "alledge/Heightmap.h"
+
+extern "C" {
+#include "allua/color.h"
+}
 #include <stdio.h>
 
 namespace alledge_lua
@@ -173,6 +177,17 @@ static int heightmap_apply_brush(lua_State *L)
 	return 0;
 }
 
+static int heightmap_color_filled_circle(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	float x = luaL_checknumber(L, 2);
+	float z = luaL_checknumber(L, 3);
+	float radius = luaL_checknumber(L, 4);
+	ALLEGRO_COLOR color = allua_check_color(L, 5);
+	heightmap->Color_filled_circle(x, z, radius, color);
+	return 0;
+}
+
 static const luaL_reg heightmap_methods[] = {
 	{"new", heightmap_new},
 	{"cast", heightmap_cast},
@@ -188,6 +203,7 @@ static const luaL_reg heightmap_methods[] = {
 	{"get_size_z", heightmap_get_size_z},
 	{"recalc_normals", heightmap_recalc_normals},
 	{"apply_brush", heightmap_apply_brush},
+	{"color_filled_circle", heightmap_color_filled_circle},
 	{0,0}
 };
 
