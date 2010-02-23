@@ -66,6 +66,14 @@ static int heightmap_cast(lua_State *L)
 	return 1;
 }
 
+static int heightmap_set_ground_texture(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	shared_ptr<Bitmap> bitmap = check_bitmap(L, 2);
+	heightmap->Set_ground_texture(bitmap);
+	return 0;
+}
+
 static int heightmap_set_splat_texture(lua_State *L)
 {
 	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
@@ -191,6 +199,7 @@ static int heightmap_color_filled_circle(lua_State *L)
 static const luaL_reg heightmap_methods[] = {
 	{"new", heightmap_new},
 	{"cast", heightmap_cast},
+	{"set_ground_texture", heightmap_set_ground_texture},
 	{"set_splat_texture", heightmap_set_splat_texture},
 	{"set_texture", heightmap_set_texture},
 	{"load", heightmap_load},
