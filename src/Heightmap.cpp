@@ -91,6 +91,49 @@ static int heightmap_set_texture(lua_State *L)
 	return 0;
 }
 
+
+static int heightmap_get_ground_texture(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	shared_ptr<Bitmap> bitmap = heightmap->Get_ground_texture();
+	push_bitmap(L, bitmap);
+	return 1;
+}
+
+static int heightmap_get_texture(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	int channel = luaL_checkint(L, 2);
+	shared_ptr<Bitmap> bitmap = heightmap->Get_texture(channel);
+	push_bitmap(L, bitmap);
+	return 1;
+}
+
+static int heightmap_set_ground_texture_filename(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	const char* filename = luaL_checkstring(L, 2);
+	heightmap->Set_ground_texture_filename(filename);
+	return 0;
+}
+
+static int heightmap_set_texture_filename(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	const char* filename = luaL_checkstring(L, 2);
+	int channel = luaL_checkint(L, 3);
+	heightmap->Set_texture_filename(filename, channel);
+	return 0;
+}
+
+static int heightmap_save(lua_State *L)
+{
+	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
+	const char* filename = luaL_checkstring(L, 2);
+	heightmap->Save(filename);
+	return 0;
+}
+
 static int heightmap_load(lua_State *L)
 {
 	shared_ptr<Heightmap> heightmap = check_heightmap(L, 1);
@@ -202,6 +245,11 @@ static const luaL_reg heightmap_methods[] = {
 	{"set_ground_texture", heightmap_set_ground_texture},
 	{"set_splat_texture", heightmap_set_splat_texture},
 	{"set_texture", heightmap_set_texture},
+	{"get_ground_texture", heightmap_get_ground_texture},
+	{"get_texture", heightmap_get_texture},
+	{"set_ground_texture_filename", heightmap_set_ground_texture_filename},
+	{"set_texture_filename", heightmap_set_texture_filename},
+	{"save", heightmap_save},
 	{"load", heightmap_load},
 	{"set_texture_scale", heightmap_set_texture_scale},
 	{"set_tilesize", heightmap_set_tilesize},

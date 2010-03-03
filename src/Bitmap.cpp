@@ -38,11 +38,16 @@ Bitmap_ud* check_bitmap_ud (lua_State *L, int index)
 
 Bitmap_ud *push_bitmap (lua_State *L, shared_ptr<Bitmap> im)
 {
-  Bitmap_ud **pi = (Bitmap_ud**)lua_newuserdata(L, sizeof(Bitmap_ud*));
-  *pi = new Bitmap_ud(im);
-  luaL_getmetatable(L, BITMAP_STRING);
-  lua_setmetatable(L, -2);
-  return *pi;
+	if(im.get() == NULL)
+	{
+		lua_pushnil(L);
+		return NULL;
+	}
+	Bitmap_ud **pi = (Bitmap_ud**)lua_newuserdata(L, sizeof(Bitmap_ud*));
+	*pi = new Bitmap_ud(im);
+	luaL_getmetatable(L, BITMAP_STRING);
+	lua_setmetatable(L, -2);
+	return *pi;
 }
 
 /* Constructor and methods
@@ -58,6 +63,14 @@ static int bitmap_load(lua_State *L)
 	shared_ptr<Bitmap> bitmap = check_bitmap(L, 1);
 	const char* filename = luaL_checkstring(L, 2);
 	lua_pushboolean(L, bitmap->Load(filename));
+	return 1;
+}
+
+static int bitmap_save(lua_State *L)
+{
+	shared_ptr<Bitmap> bitmap = check_bitmap(L, 1);
+	const char* filename = luaL_checkstring(L, 2);
+	lua_pushboolean(L, bitmap->Save(filename));
 	return 1;
 }
 
@@ -122,6 +135,7 @@ static int bitmap_eq (lua_State *L)
 static const luaL_reg bitmap_methods[] = {
 	{"new", bitmap_new},
 	{"load", bitmap_load},
+	{"save", bitmap_save},
 	{"draw", bitmap_draw},
 	{"draw_scaled", bitmap_draw_scaled},
 	{"set_target", bitmap_set_target},
