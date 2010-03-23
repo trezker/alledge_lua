@@ -36,6 +36,30 @@ static int pop_view(lua_State *L)
 	return 0;
 }
 
+static int gl_set_viewport(lua_State *L)
+{
+	int x = luaL_checknumber(L, 1);
+	int y = luaL_checknumber(L, 2);
+	int w = luaL_checknumber(L, 3);
+	int h = luaL_checknumber(L, 4);
+	glViewport(x, y, w, h);
+	return 0;
+}
+
+static int gl_get(lua_State *L)
+{
+	int pname = luaL_checknumber(L, 1);
+	if(pname == GL_VIEWPORT)
+	{
+		GLint params[4];
+		glGetIntegerv(GL_VIEWPORT, params);
+		for(int i=0; i<4; ++i)
+			lua_pushnumber(L, params[i]);
+		return 4;
+	}
+	return 0;
+}
+
 static int gl_enable(lua_State *L)
 {
 	int en = luaL_checknumber(L, 1);
@@ -72,6 +96,8 @@ static const luaL_reg alledge_lua_gl_methods[] = {
 	{"disable", gl_disable},
 	{"clear", gl_clear},
 	{"colormask", gl_colormask},
+	{"get", gl_get},
+	{"set_viewport", gl_set_viewport},
 	{NULL, NULL}
 };
 
@@ -91,6 +117,9 @@ static int gl_register_enum(lua_State *L)
 
 	lua_pushinteger(L, GL_VERTEX_SHADER);
 	lua_setfield(L, -2, "VERTEX_SHADER");
+
+	lua_pushinteger(L, GL_VIEWPORT);
+	lua_setfield(L, -2, "VIEWPORT");
 }
 
 static const luaL_reg alledge_lua_lib[] = {
