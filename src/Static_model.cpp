@@ -70,6 +70,36 @@ static int static_model_set_texture(lua_State *L)
 	return 0;
 }
 
+static int static_model_set_color(lua_State *L)
+{
+	shared_ptr<Static_model> model = check_static_model(L, 1);
+
+	float v[4];
+	if(lua_istable(L, 2))
+	{
+		for(int i=1; i<=4; ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_gettable(L, 2);
+			v[i-1] = luaL_checknumber(L, -1);
+		}
+		lua_pop(L, 4);
+	}
+	else if (lua_gettop(L)>=3) {
+		v[0] = luaL_checknumber(L, 2);
+		v[1] = luaL_checknumber(L, 3);
+		v[2] = luaL_checknumber(L, 4);
+		if (lua_gettop(L)==4) {
+			v[3] = luaL_checknumber(L, 5);
+		}
+		else
+		{
+			v[3] = 1;
+		}
+	}
+	model->Set_color(v);
+}
+
 static int static_model_eq (lua_State *L)
 {
 	shared_ptr<Static_model> a = check_static_model(L, 1);
@@ -82,6 +112,7 @@ static const luaL_reg static_model_methods[] = {
 	{"new", static_model_new},
 	{"load_model", static_model_load_model},
 	{"set_texture", static_model_set_texture},
+	{"set_color", static_model_set_color},
 	{"equals",       static_model_eq},
 	{0,0}
 };
