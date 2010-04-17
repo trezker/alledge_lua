@@ -1,5 +1,6 @@
 #include "../alledge_lua/Static_model.h"
 #include "../alledge_lua/Bitmap.h"
+#include "../alledge_lua/Vector3.h"
 #include "alledge/Static_model.h"
 
 #include <stdio.h>
@@ -100,6 +101,75 @@ static int static_model_set_color(lua_State *L)
 	model->Set_color(v);
 }
 
+static int static_model_get_low_corner(lua_State *L)
+{
+	shared_ptr<Static_model> static_model = check_static_model(L, 1);
+	Vector3 corner = static_model->Get_low_corner();
+	push_vector3(L, corner);
+	return 1;
+}
+
+static int static_model_get_high_corner(lua_State *L)
+{
+	shared_ptr<Static_model> static_model = check_static_model(L, 1);
+	Vector3 corner = static_model->Get_high_corner();
+	push_vector3(L, corner);
+	return 1;
+}
+
+static int static_model_set_model_data(lua_State *L)
+{
+	shared_ptr<Static_model> static_model = check_static_model(L, 1);
+	Static_model::Vectors coords;
+	if(lua_istable(L, 2))
+	{
+		for(int i=1; true; ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_gettable(L, 2);
+			if(lua_isnil(L, -1))
+			{
+				lua_pop(L, 1);
+				break;
+			}
+			coords.push_back(check_vector3(L, -1));
+			lua_pop(L, 1);
+		}
+	}
+	Static_model::Indexes faces;
+	if(lua_istable(L, 3))
+	{
+		for(int i=1; ; ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_gettable(L, 3);
+			if(lua_isnil(L, -1))
+			{
+				lua_pop(L, 1);
+				break;
+			}
+			else if(lua_istable(L, -1))
+			{
+				for(int j=1; j<=3; ++j)
+				{
+					lua_pushnumber(L, j);
+					lua_gettable(L, -2);
+					faces.push_back(luaL_checkint(L, -1));
+					lua_pop(L, 1);
+				}
+			}
+			else
+			{
+				faces.push_back(luaL_checkint(L, -1));
+				lua_pop(L, 1);
+			}
+		}
+	}
+	static_model->Set_model_data(coords, faces);
+	printf("Coords: %i, Indexes: %i\n", coords.size(), faces.size());
+	return 0;
+}
+
 static int static_model_eq (lua_State *L)
 {
 	shared_ptr<Static_model> a = check_static_model(L, 1);
@@ -113,6 +183,9 @@ static const luaL_reg static_model_methods[] = {
 	{"load_model", static_model_load_model},
 	{"set_texture", static_model_set_texture},
 	{"set_color", static_model_set_color},
+	{"get_low_corner", static_model_get_low_corner},
+	{"get_high_corner", static_model_get_high_corner},
+	{"set_model_data", static_model_set_model_data},
 	{"equals",       static_model_eq},
 	{0,0}
 };
