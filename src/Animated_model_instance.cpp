@@ -126,6 +126,36 @@ static int animated_model_instance_update(lua_State *L)
 	return 0;
 }
 
+static int animated_model_instance_set_color(lua_State *L)
+{
+	shared_ptr<Animated_model_instance> model = check_animated_model_instance(L, 1);
+
+	float v[4];
+	if(lua_istable(L, 2))
+	{
+		for(int i=1; i<=4; ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_gettable(L, 2);
+			v[i-1] = luaL_checknumber(L, -1);
+		}
+		lua_pop(L, 4);
+	}
+	else if (lua_gettop(L)>=4) {
+		v[0] = luaL_checknumber(L, 2);
+		v[1] = luaL_checknumber(L, 3);
+		v[2] = luaL_checknumber(L, 4);
+		if (lua_gettop(L)==5) {
+			v[3] = luaL_checknumber(L, 5);
+		}
+		else
+		{
+			v[3] = 1;
+		}
+	}
+	model->Set_color(v);
+}
+
 static const luaL_reg animated_model_instance_methods[] = {
 	{"new", animated_model_instance_new},
 	{"play_animation", animated_model_instance_play_animation},
@@ -137,6 +167,7 @@ static const luaL_reg animated_model_instance_methods[] = {
 	{"attach_to_bone", animated_model_instance_attach_to_bone},
 	{"detach_from_bone", animated_model_instance_detach_from_bone},
 */	{"update", animated_model_instance_update},
+	{"set_color", animated_model_instance_set_color},
 	{0,0}
 };
 
