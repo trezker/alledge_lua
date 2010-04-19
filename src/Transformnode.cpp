@@ -102,7 +102,7 @@ static int transformnode_set_scale(lua_State *L)
 {
 	shared_ptr<Transformnode> transformnode = check_transformnode(L, 1);
 	Vector3 vector = check_vector3(L, 2);
-	transformnode->Set_rotation(vector);
+	transformnode->Set_scale(vector);
 	return 0;
 }
 
