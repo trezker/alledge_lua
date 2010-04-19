@@ -156,6 +156,22 @@ static int animated_model_instance_set_color(lua_State *L)
 	model->Set_color(v);
 }
 
+static int animated_model_get_low_corner(lua_State *L)
+{
+	shared_ptr<Animated_model_instance> animated_model_instance = check_animated_model_instance(L, 1);
+	Vector3 corner = animated_model_instance->Get_low_corner();
+	push_vector3(L, corner);
+	return 1;
+}
+
+static int animated_model_get_high_corner(lua_State *L)
+{
+	shared_ptr<Animated_model_instance> animated_model_instance = check_animated_model_instance(L, 1);
+	Vector3 corner = animated_model_instance->Get_high_corner();
+	push_vector3(L, corner);
+	return 1;
+}
+
 static const luaL_reg animated_model_instance_methods[] = {
 	{"new", animated_model_instance_new},
 	{"play_animation", animated_model_instance_play_animation},
@@ -168,6 +184,8 @@ static const luaL_reg animated_model_instance_methods[] = {
 	{"detach_from_bone", animated_model_instance_detach_from_bone},
 */	{"update", animated_model_instance_update},
 	{"set_color", animated_model_instance_set_color},
+	{"get_low_corner", animated_model_get_low_corner},
+	{"get_high_corner", animated_model_get_high_corner},
 	{0,0}
 };
 
