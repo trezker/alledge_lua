@@ -110,6 +110,32 @@ while not quit do
 		end
 
 		if event.type == allegro5.keyboard.EVENT_UP then
+			if event.keycode == allegro5.keyboard.KEY_M then
+				native_dialog = allegro5.native_dialog.create ("", "Select object", "*.tmf", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
+				native_dialog:show()
+				n = native_dialog:get_count()
+				if n>0 then
+					path = native_dialog:get_path(0)
+					
+					static_model = alledge_lua.static_model.new()
+					static_model:load_model(path)
+					static_model_node:set_model(static_model)
+				end
+			end
+
+			if event.keycode == allegro5.keyboard.KEY_T then
+				native_dialog = allegro5.native_dialog.create ("", "Select texture", "*.*", allegro5.native_dialog.FILECHOOSER_FILE_MUST_EXIST)
+				native_dialog:show()
+				n = native_dialog:get_count()
+				if n>0 then
+					path = native_dialog:get_path(0)
+					
+					texture = alledge_lua.bitmap.new()
+					b = texture:load(path)
+					static_model:set_texture(texture)
+				end
+			end
+			
 			if event.keycode == allegro5.keyboard.KEY_W then
 				move_forward = false
 			end
