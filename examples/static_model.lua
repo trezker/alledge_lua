@@ -210,7 +210,8 @@ while not quit do
 	alledge_lua.pop_view()
 
 	allegro5.primitives.draw_filled_rectangle(5, 5, 120, 40, allegro5.color.map_rgb(255, 0, 0))
-	font:draw_text (10, 10, 0, "FPS: " .. fps)
+	color = allegro5.color.map_rgb(255, 255, 255)
+	font:draw_text (color, 10, 10, 0, "FPS: " .. fps)
 
 
 	allegro5.display.flip()

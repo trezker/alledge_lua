@@ -11,8 +11,12 @@ allegro5.bitmap.init_image_addon ()
 allegro5.font.init_addon ()
 allegro5.font.init_ttf_addon ()
 
+
 allegro5.display.set_new_flags(allegro5.display.WINDOWED)
 display = allegro5.display.create(640, 480)
+
+
+
 event_queue = allegro5.event_queue.create()
 
 event_queue:register_event_source(display:get_event_source())
@@ -47,7 +51,6 @@ animated_model:load_animation("data/Male_walk.md5anim", "walk")
 animated_model:load_animation("data/Male_run.md5anim", "run")
 animated_model:load_animation("data/Male_breathe.md5anim", "breathe")
 
-	print("So far")	
 breathe_instance = alledge_lua.animated_model_instance.new()
 breathe_instance:set_model(animated_model)
 breathe_instance:play_animation("breathe", true)
@@ -247,7 +250,8 @@ while not quit do
 	alledge_lua.pop_view()
 
 	allegro5.primitives.draw_filled_rectangle(5, 5, 120, 40, allegro5.color.map_rgb(255, 0, 0))
-	font:draw_text (10, 10, 0, "FPS: " .. fps)
+	color = allegro5.color.map_rgb(255, 255, 255)
+	font:draw_text (color, 10, 10, 0, "FPS: " .. fps)
 
 
 	allegro5.display.flip()

@@ -1,5 +1,5 @@
 lib_name = "alledge_lua"
-dependencies = { "allegro-4.9.16", "allegro_image-4.9.16", "allegro_font-4.9.16", "allegro_ttf-4.9.16", "allegro_primitives-4.9.16", "allegro_audio-4.9.16", "allegro_vorbis-4.9.16", "allegro_dialog-4.9.16", "alledge", "allua" }
+dependencies = { "allegro", "allegro_image", "allegro_font", "allegro_ttf", "allegro_primitives", "allegro_audio", "allegro_acodec", "allegro_dialog", "alledge", "allua" }
 
 solution (lib_name)
 	configurations { "Debug", "Release" }
