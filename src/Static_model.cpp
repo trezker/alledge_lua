@@ -117,6 +117,14 @@ static int static_model_get_high_corner(lua_State *L)
 	return 1;
 }
 
+static int static_model_show_normals(lua_State *L)
+{
+	shared_ptr<Static_model> static_model = check_static_model(L, 1);
+	bool active = lua_toboolean(L, 2);
+	static_model->Show_normals(active);
+	return 0;
+}
+
 static int static_model_set_model_data(lua_State *L)
 {
 	shared_ptr<Static_model> static_model = check_static_model(L, 1);
@@ -186,6 +194,7 @@ static const luaL_reg static_model_methods[] = {
 	{"get_low_corner", static_model_get_low_corner},
 	{"get_high_corner", static_model_get_high_corner},
 	{"set_model_data", static_model_set_model_data},
+	{"show_normals", static_model_show_normals},
 	{"equals",       static_model_eq},
 	{0,0}
 };
