@@ -41,19 +41,23 @@ texture:load("data/darwinian.png")
 --quads = {}
 
 corners = {
-	alledge_lua.vector3.new(1, 1, -1),
-	alledge_lua.vector3.new(-1, 1, -1),
-	alledge_lua.vector3.new(-1, -1, -1),
-	alledge_lua.vector3.new(1, -1, -1),
-	alledge_lua.vector3.new(1, 1, 1),
-	alledge_lua.vector3.new(-1, 1, 1),
-	alledge_lua.vector3.new(-1, -1, 1),
-	alledge_lua.vector3.new(1, -1, 1)
+	alledge_lua.vector3.new(1, 0, 0),
+	alledge_lua.vector3.new(-1, 0, 0),
+	alledge_lua.vector3.new(0, 1, 0),
+	alledge_lua.vector3.new(0, -1, 0),
+	alledge_lua.vector3.new(0, 0, 1),
+	alledge_lua.vector3.new(0, 0, -1),
 }
 
 faces = {
-	1, 2, 3,
-	1, 3, 4
+	1, 6, 4,
+	1, 4, 5,
+	1, 3, 6,
+	1, 3, 5,
+	2, 6, 3,
+	2, 4, 6,
+	2, 5, 4,
+	2, 5, 3
 }
 
 static_model = alledge_lua.static_model.new()
@@ -62,53 +66,6 @@ static_model_node = alledge_lua.static_model_node.new()
 static_model_node:set_model(static_model)
 alledge_lua.scenenode.attach_node(transform, static_model_node)
 
---[[
-corners = {
-	{
-		alledge_lua.vector3.new(1, 1, -1),
-		alledge_lua.vector3.new(-1, 1, -1),
-		alledge_lua.vector3.new(-1, -1, -1),
-		alledge_lua.vector3.new(1, -1, -1)
-	},
-	{
-		alledge_lua.vector3.new(1, -1, 1),
-		alledge_lua.vector3.new(-1, -1, 1),
-		alledge_lua.vector3.new(-1, 1, 1),
-		alledge_lua.vector3.new(1, 1, 1)
-	},
-	{
-		alledge_lua.vector3.new(-1, 1, 1),
-		alledge_lua.vector3.new(-1, -1, 1),
-		alledge_lua.vector3.new(-1, -1, -1),
-		alledge_lua.vector3.new(-1, 1, -1)
-	},
-	{
-		alledge_lua.vector3.new(1, 1, -1),
-		alledge_lua.vector3.new(1, -1, -1),
-		alledge_lua.vector3.new(1, -1, 1),
-		alledge_lua.vector3.new(1, 1, 1)
-	},
-	{
-		alledge_lua.vector3.new(1, 1, 1),
-		alledge_lua.vector3.new(-1, 1, 1),
-		alledge_lua.vector3.new(-1, 1, -1),
-		alledge_lua.vector3.new(1, 1, -1)
-	},
-	{
-		alledge_lua.vector3.new(1, -1, -1);
-		alledge_lua.vector3.new(-1, -1, -1);
-		alledge_lua.vector3.new(-1, -1, 1);
-		alledge_lua.vector3.new(1, -1, 1);
-	}
-}
-
-for i = 1, 6 do
-	quads[i] = alledge_lua.quadnode.new()
-	quads[i]:set_corners(corners[i])
-	quads[i]:set_texture(texture)
-	alledge_lua.scenenode.attach_node(transform, quads[i]);
-end
---]]
 fov = 45
 near = 1
 far = 1000
