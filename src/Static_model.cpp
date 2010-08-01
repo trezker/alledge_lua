@@ -154,13 +154,13 @@ static int static_model_set_model_data(lua_State *L)
 				{
 					lua_pushnumber(L, j);
 					lua_gettable(L, -2);
-					faces.push_back(luaL_checkint(L, -1));
+					faces.push_back(luaL_checkint(L, -1) - 1);
 					lua_pop(L, 1);
 				}
 			}
 			else
 			{
-				faces.push_back(luaL_checkint(L, -1));
+				faces.push_back(luaL_checkint(L, -1) - 1);
 				lua_pop(L, 1);
 			}
 		}
