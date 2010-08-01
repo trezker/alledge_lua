@@ -30,7 +30,7 @@ root:attach_node(camera);
 light = alledge_lua.lightnode.new()
 light:set_ambient(.2, .2, .2, 1)
 light:set_diffuse(.8, .8, .8, 1)
-light:set_position(alledge_lua.vector3.new(10, 10, 10), false)
+light:set_position(alledge_lua.vector3.new(0, 10, 0), false)
 alledge_lua.scenenode.attach_node(camera, light)
 
 transform = alledge_lua.transformnode.new()
@@ -53,15 +53,18 @@ faces = {
 	1, 6, 4,
 	1, 4, 5,
 	1, 3, 6,
-	1, 3, 5,
+	1, 5, 3,
 	2, 6, 3,
 	2, 4, 6,
 	2, 5, 4,
-	2, 5, 3
+-- [[
+	2, 3, 5
+--]]
 }
 
 static_model = alledge_lua.static_model.new()
 static_model:set_model_data(corners, faces)
+static_model:set_color(1, 1, 1, 1)
 static_model_node = alledge_lua.static_model_node.new()
 static_model_node:set_model(static_model)
 alledge_lua.scenenode.attach_node(transform, static_model_node)
