@@ -169,8 +169,9 @@ static int static_model_set_model_data(lua_State *L)
 			else
 			{
 				faces.push_back(luaL_checkint(L, -1) - 1);
-				lua_pop(L, 1);
 			}
+
+			lua_pop(L, 1);
 		}
 	}
 	static_model->Set_model_data(coords, faces);
