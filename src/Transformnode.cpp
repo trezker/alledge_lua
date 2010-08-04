@@ -1,6 +1,7 @@
 #include "../alledge_lua/Scenenode.h"
 #include "../alledge_lua/Transformnode.h"
 #include "../alledge_lua/Vector3.h"
+#include "../alledge_lua/Matrix4.h"
 #include "alledge/Transformnode.h"
 #include <cstdio>
 
@@ -82,6 +83,13 @@ static int transformnode_get_scale(lua_State *L)
 	return 1;
 }
 
+static int transformnode_get_matrix(lua_State *L)
+{
+	shared_ptr<Transformnode> transformnode = check_transformnode(L, 1);
+	push_matrix4(L, transformnode->Get_matrix());
+	return 1;
+}
+
 static int transformnode_set_position(lua_State *L)
 {
 	shared_ptr<Transformnode> transformnode = check_transformnode(L, 1);
@@ -112,6 +120,7 @@ static const luaL_reg transformnode_methods[] = {
 	{"get_position", transformnode_get_position},
 	{"get_rotation", transformnode_get_rotation},
 	{"get_scale", transformnode_get_scale},
+	{"get_matrix", transformnode_get_matrix},
 	{"set_position", transformnode_set_position},
 	{"set_rotation", transformnode_set_rotation},
 	{"set_scale", transformnode_set_scale},
