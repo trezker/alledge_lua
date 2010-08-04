@@ -107,6 +107,14 @@ static int vector3_getangleradians (lua_State *L)
 	return 1;
 }
 
+static int vector3_transform_by_matrix4 (lua_State *L)
+{
+	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
+	Matrix4 *m = (Matrix4*)lua_touserdata(L, 2);
+	v->TransformByMatrix4(*m);
+	return 0;
+}
+
 static int vector3_getproperty (lua_State *L)
 {
 	Vector3 *v = (Vector3*)lua_touserdata(L, 1);
@@ -207,6 +215,7 @@ static const luaL_reg vector3_methods[] = {
 	{"dotproduct",    vector3_dotproduct},
 	{"getangledegrees", vector3_getangledegrees},
 	{"getangleradians", vector3_getangleradians},
+	{"transform_by_matrix4", vector3_transform_by_matrix4},
 	{0,0}
 };
 
