@@ -1,5 +1,6 @@
 
 #include "../alledge_lua/Vector3.h"
+#include "../alledge_lua/Matrix4.h"
 #include "../alledge_lua/Scenenode.h"
 #include "../alledge_lua/Cameranode.h"
 #include "../alledge_lua/Transformnode.h"
@@ -140,6 +141,7 @@ int luaopen_liballedge_lua(lua_State* L)
 	lua_setfield(L, -2, "gl");
 
 	register_vector3(L);
+	register_matrix4(L);
 	register_scenenode(L);
 	register_cameranode(L);
 	register_quadnode(L);
