@@ -242,6 +242,7 @@ height = 480
 
 last_time = allegro5.current_time()
 
+mouse_button = {}
 b = false
 
 while not quit do
@@ -271,42 +272,78 @@ while not quit do
 			pos = camera:get_position() + camera:get_right()
 			camera:set_position(pos)
 		end
+
+		if event.keycode == allegro5.keyboard.KEY_PGDN then
+			print ("Woop")
+			if selected then
+				selected:split()
+
+				c = 1
+				f = 1
+				for k, v in pairs(lodtris) do
+					v:to_mesh()
+				end
+				static_model:set_model_data(corners, faces)
+
+				selected = selected.child[1]
+				selection_model:set_model_data(selected.corners, {1, 2, 3})
+			end
+		end
 	end
 
 	if event.type == allegro5.mouse.EVENT_DOWN then
+		mouse_button[event.button] = true
 		b = true
 	end
 
 	if event.type == allegro5.mouse.EVENT_UP then
+		mouse_button[event.button] = false
 		b = false
-		alledge_lua.init_perspective_view(fov, width/height, near, far)
-		oglpoint = camera:unproject(event.x, event.y)
-		alledge_lua.pop_view()
+		if event.button == 2 then
+			alledge_lua.init_perspective_view(fov, width/height, near, far)
+			oglpoint = camera:unproject(event.x, event.y)
+			alledge_lua.pop_view()
 
-		matrix = transform:get_matrix()
-		print( matrix )
-		mindiff = 100
-		sel = nil
-		for k, v in pairs(lodtris) do
-			center = (v.corners[1] + v.corners[2] + v.corners[3]) / 3
-			center:transform_by_matrix4(matrix)
-			diff = (center - oglpoint):length()
-			if diff<mindiff then
-				mindiff = diff
-				sel = k
+			matrix = transform:get_matrix()
+			print( matrix )
+			mindiff = 100
+			sel = nil
+			for k, v in pairs(lodtris) do
+				center = (v.corners[1] + v.corners[2] + v.corners[3]) / 3
+				center:transform_by_matrix4(matrix)
+				diff = (center - oglpoint):length()
+				if diff<mindiff then
+					mindiff = diff
+					sel = k
+				end
 			end
-		end
-		if sel then
-			print( "Select " .. sel)
-			selected = lodtris[sel]
-			selection_model:set_model_data(selected.corners, {1, 2, 3})
-		else
-			print("unselect")
+			if sel then
+				print( "Select ")
+				print( sel )
+				selected = lodtris[sel]
+				while selected.child do
+					mindiff = 100
+					for k, v in pairs(selected.child) do
+						center = (v.corners[1] + v.corners[2] + v.corners[3]) / 3
+						center:transform_by_matrix4(matrix)
+						diff = (center - oglpoint):length()
+						if diff<mindiff then
+							mindiff = diff
+							sel = k
+						end
+					end
+					print( sel )
+					selected = selected.child[sel]
+				end
+				selection_model:set_model_data(selected.corners, {1, 2, 3})
+			else
+				print("unselect")
+			end
 		end
 	end
 
 	if event.type == allegro5.mouse.EVENT_AXES then
-		if b then
+		if mouse_button[1] then
 			rot = transform:get_rotation() + alledge_lua.vector3.new(event.dy, event.dx, 0)
 			transform:set_rotation(rot)
 		end
