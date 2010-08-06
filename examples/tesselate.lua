@@ -121,7 +121,7 @@ function Lodtri:split()
 	if self.child then
 		return
 	end
-	if not (self.edges[1] and self.edges[2] and self.edges[3]) then
+	if self.parent then
 		self.parent.edges[1]:split()
 		self.parent.edges[2]:split()
 		self.parent.edges[3]:split()
@@ -279,8 +279,8 @@ alledge_lua.scenenode.attach_node(selection_transform, selection_model_node)
 
 
 fov = 45
-near = 1
-far = 1000
+near = 0.1
+far = 100
 width = 640
 height = 480
 
@@ -299,7 +299,22 @@ while not quit do
 		quit = true
 	end
 
+	if event.type == allegro5.keyboard.EVENT_DOWN then
+		if event.keycode == allegro5.keyboard.KEY_W then
+			move_forward = true
+		end
+		if event.keycode == allegro5.keyboard.KEY_S then
+			move_backward = true
+		end
+	end
 	if event.type == allegro5.keyboard.EVENT_UP then
+		if event.keycode == allegro5.keyboard.KEY_W then
+			move_forward = false
+		end
+		if event.keycode == allegro5.keyboard.KEY_S then
+			move_backward = false
+		end
+--[[
 		if event.keycode == allegro5.keyboard.KEY_W then
 			pos = camera:get_position() + camera:get_front()
 			camera:set_position(pos)
@@ -308,6 +323,7 @@ while not quit do
 			pos = camera:get_position() - camera:get_front()
 			camera:set_position(pos)
 		end
+--]]
 		if event.keycode == allegro5.keyboard.KEY_A then
 			pos = camera:get_position() - camera:get_right()
 			camera:set_position(pos)
@@ -411,6 +427,15 @@ while not quit do
 	end
 	
 --	transform:set_rotation(transform:get_rotation() + alledge_lua.vector3.new(10, 10, 0)*dt)
+
+	if move_forward then
+		pos = camera:get_position() + camera:get_front() * dt
+		camera:set_position(pos)
+	end
+	if move_backward then
+		pos = camera:get_position() - camera:get_front() * dt
+		camera:set_position(pos)
+	end
 
 	alledge_lua.init_perspective_view(fov, width/height, near, far)
 	alledge_lua.gl.enable(alledge_lua.gl.DEPTH_TEST)
