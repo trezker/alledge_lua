@@ -73,6 +73,50 @@ function Lodtri:iSharesEdge(t)
 	return -1
 end
 
+function Lodtri:merge()
+	--Have no children, nothing to merge
+	if not self.child then
+		return
+	end
+	--Tell all children of neighbours to merge
+	for ke, ve in pairs(self.edges) do
+		if ve.child then
+			for kc, vc in pairs(ve.child) do
+				vc:merge()
+			end
+		end
+	end
+	
+	--Make sure the childrens neighbours edges to us are nil
+	--we got this far we can do the combine
+	for i = 1, 3 do
+		--any neighbors with children, inform them our children
+		--are gone (point them to null)
+		if self.edges[i].child then
+			k = i + 1 if k > 3 then k = 1 end
+			iEdge = self.edges[i]:iSharesEdge(self)
+			if iEdge ~= -1 then
+				j = iEdge + 1 if j > 3 then j = 1 end
+				self.edges[i].child[iEdge].edges[iEdge] = nil
+				self.edges[i].child[j].edges[iEdge] = nil
+
+				--correct neighbour child's points
+--				n = (self.edges[i].child[iEdge].corners[iEdge] + self.edges[i].child[j].corners[j]) / 2
+				n = (self.corners[i] + self.corners[k]) /2
+				l = j + 1 if l > 3 then l = 1 end
+				self.edges[i].child[iEdge].corners[j] = n
+				self.edges[i].child[j].corners[iEdge] = n
+				self.edges[i].child[4].corners[l] = n
+			else
+				print("Negative!")
+			end
+		else
+			print("NO child")
+		end
+	end
+	self.child = nil
+end
+
 function Lodtri:split()
 	if self.child then
 		return
@@ -273,8 +317,25 @@ while not quit do
 			camera:set_position(pos)
 		end
 
-		if event.keycode == allegro5.keyboard.KEY_PGDN then
+		if event.keycode == allegro5.keyboard.KEY_PGUP then
 			print ("Woop")
+			if selected.parent then
+				selected = selected.parent
+				selection_model:set_model_data(selected.corners, {1, 2, 3})
+
+				selected:merge()
+
+				c = 1
+				f = 1
+				corners = {}
+				faces = {}
+				for k, v in pairs(lodtris) do
+					v:to_mesh()
+				end
+				static_model:set_model_data(corners, faces)
+			end
+		end
+		if event.keycode == allegro5.keyboard.KEY_PGDN then
 			if selected then
 				selected:split()
 
