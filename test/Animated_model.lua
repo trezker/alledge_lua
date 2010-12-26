@@ -9,7 +9,7 @@ Test_animated_model = {}
 
 function Test_animated_model:test00_new()
 	animated_model = alledge_lua.animated_model.new()
-	assertEquals("animated_model", tostring(animated_model):sub(1, 6))
+	assertEquals("animated_model", tostring(animated_model):sub(1, 14))
 end
 
 function Test_animated_model:test01_load()

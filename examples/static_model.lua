@@ -10,6 +10,7 @@ allegro5.mouse.install()
 allegro5.bitmap.init_image_addon ()
 allegro5.font.init_addon ()
 allegro5.font.init_ttf_addon ()
+allegro5.primitives.init_addon ()
 
 allegro5.display.set_new_flags(allegro5.display.WINDOWED)
 display = allegro5.display.create(640, 480)

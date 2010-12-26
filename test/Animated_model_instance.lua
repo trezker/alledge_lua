@@ -15,7 +15,7 @@ end
 function Test_animated_model_instance:test01_is_scenenode()
 	animated_model_instance = alledge_lua.animated_model_instance.new()
 	scenenode = alledge_lua.scenenode.new()
-	scenenode:attach_node(animated_model_instance:cast())
+	scenenode:attach_node(animated_model_instance)
 end
 
 function Test_animated_model_instance:test02_apply()
